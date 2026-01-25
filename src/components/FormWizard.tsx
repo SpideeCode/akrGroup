@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -41,71 +40,73 @@ export default function FormWizard({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 bg-brand-dark/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        className="bg-brand-cream border-2 border-brand-dark max-w-2xl w-full my-8 relative"
       >
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Demande de devis
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              className="bg-blue-900 h-2 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
-
-          <p className="text-sm text-gray-600 mt-2">
-            Étape {currentStep + 1} sur {totalSteps}
-          </p>
+        {/* Progress Bar Top */}
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-dark/10">
+          <motion.div
+            className="bg-accent-energy h-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: "circOut" }}
+          />
         </div>
 
-        <div className="p-6 min-h-[400px]">
+        <div className="p-8 md:p-12 border-b border-brand-dark/10">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-muted mb-2 block">
+                Questionnaire — Étape {currentStep + 1}/{totalSteps}
+              </span>
+              <h2 className="text-3xl font-black font-montserrat uppercase tracking-tighter text-brand-dark">
+                Demande de <span className="text-accent-energy">Devis</span>
+              </h2>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 flex items-center justify-center border border-brand-dark/10 hover:border-brand-dark transition-colors group"
+            >
+              <X className="w-5 h-5 transition-transform group-hover:rotate-90" />
+            </button>
+          </div>
+        </div>
+
+        <div className="p-8 md:p-12 min-h-[350px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
               {children[currentStep]}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="p-6 border-t border-gray-200 flex justify-between">
+        <div className="p-8 md:p-12 bg-brand-dark/5 flex justify-between gap-4">
           <button
             onClick={handlePrev}
             disabled={currentStep === 0}
-            className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-3 px-8 py-4 font-montserrat font-bold uppercase text-xs tracking-widest text-brand-dark border-2 border-brand-dark transition-all hover:bg-brand-dark hover:text-white disabled:opacity-20 disabled:pointer-events-none"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4" />
             Retour
           </button>
 
           <button
             onClick={handleNext}
             disabled={!canProceed}
-            className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-white bg-blue-900 hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-3 px-8 py-4 font-montserrat font-black uppercase text-xs tracking-widest bg-brand-dark text-white border-2 border-brand-dark transition-all hover:bg-accent-energy hover:border-accent-energy disabled:opacity-20 disabled:pointer-events-none"
           >
-            {currentStep === totalSteps - 1 ? 'Envoyer' : 'Suivant'}
-            {currentStep < totalSteps - 1 && <ChevronRight className="w-5 h-5" />}
+            {currentStep === totalSteps - 1 ? 'Soumettre' : 'Continuer'}
+            {currentStep < totalSteps - 1 && <ChevronRight className="w-4 h-4" />}
           </button>
         </div>
       </motion.div>

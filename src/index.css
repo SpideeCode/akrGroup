@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-inter bg-brand-cream text-brand-dark antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-montserrat font-bold;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="number"],
+  select {
+    @apply w-full bg-transparent border-b-2 border-brand-dark py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium text-lg rounded-none;
+  }
+
+  label {
+    @apply block text-[10px] uppercase tracking-[0.2em] font-black text-brand-muted mb-2;
+  }
+}
+
+@layer components {
+  .btn-option {
+    @apply p-6 border-2 font-montserrat font-bold uppercase text-xs tracking-widest transition-all;
+  }
+
+  .btn-option-active {
+    @apply border-brand-dark bg-brand-dark text-white;
+    box-shadow: 4px 4px 0px 0px rgba(26, 26, 26, 0.1);
+  }
+
+  .btn-option-inactive {
+    @apply border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60;
+  }
+}

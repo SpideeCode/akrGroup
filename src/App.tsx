@@ -34,7 +34,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-cream">
       <Header onDevisClick={scrollToServices} />
       <Hero onDevisClick={scrollToServices} />
       <div id="services">

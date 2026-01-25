@@ -92,8 +92,8 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
 
   const steps = [
     <div key="step1" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Électricité
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Votre <span className="text-accent-solar">Consommation</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -116,11 +116,8 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
             <button
               key={option}
               onClick={() => updateField('phase', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.phase === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.phase === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -136,11 +133,8 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
             <button
               key={option}
               onClick={() => updateField('tva', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.tva === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.tva === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -153,8 +147,8 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
     </div>,
 
     <div key="step2" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Logement
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Informations <span className="text-accent-solar">Habitat</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -225,8 +219,8 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
     </div>,
 
     <div key="step3" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Coordonnées
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Dernière <span className="text-accent-solar">Étape</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -286,7 +280,7 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
       currentStep={currentStep}
       setCurrentStep={setCurrentStep}
       onSubmit={handleSubmit}
-      canProceed={validateStep()}
+      canProceed={!!validateStep()}
     >
       {steps}
     </FormWizard>

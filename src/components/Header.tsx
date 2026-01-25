@@ -4,18 +4,19 @@ interface HeaderProps {
 
 export default function Header({ onDevisClick }: HeaderProps) {
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-brand-dark/10 bg-brand-cream/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex justify-between items-center">
         <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-            AKR Group
-          </h1>
+          <span className="text-2xl font-black font-montserrat uppercase tracking-tighter text-brand-dark">
+            AKR<span className="text-accent-energy">.</span>Group
+          </span>
         </div>
         <button
           onClick={onDevisClick}
-          className="bg-blue-900 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200 shadow-sm hover:shadow-md"
+          className="group relative px-6 py-2 overflow-hidden border-2 border-brand-dark font-montserrat font-bold uppercase text-sm tracking-widest transition-all duration-300 hover:text-white"
         >
-          Devis Gratuit
+          <span className="relative z-10">Devis Gratuit</span>
+          <div className="absolute inset-0 z-0 h-full w-0 bg-brand-dark transition-all duration-300 group-hover:w-full" />
         </button>
       </div>
     </header>

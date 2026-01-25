@@ -82,8 +82,8 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
 
   const steps = [
     <div key="step1" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Services souhaités
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Besoin <span className="text-accent-telecom">Télécom</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -94,21 +94,19 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
             <button
               key={service}
               onClick={() => toggleService(service)}
-              className={`w-full p-4 border-2 rounded-lg font-medium transition-all text-left ${
-                formData.services.includes(service)
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`w-full p-4 border-2 font-montserrat font-bold uppercase text-xs tracking-widest transition-all text-left ${formData.services.includes(service)
+                  ? 'border-brand-dark bg-brand-dark text-white'
+                  : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60'
+                }`}
             >
-              <span className="flex items-center gap-3">
-                <span className={`w-5 h-5 border-2 rounded flex items-center justify-center ${
-                  formData.services.includes(service)
-                    ? 'border-blue-900 bg-blue-900'
-                    : 'border-gray-300'
-                }`}>
+              <span className="flex items-center gap-4">
+                <span className={`w-5 h-5 border-2 flex items-center justify-center transition-colors ${formData.services.includes(service)
+                    ? 'border-white bg-white'
+                    : 'border-brand-dark/20'
+                  }`}>
                   {formData.services.includes(service) && (
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    <svg className="w-3 h-3 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </span>
@@ -119,68 +117,53 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Opérateur actuel *
-        </label>
+        <label>Opérateur actuel *</label>
         <input
           type="text"
           value={formData.currentProvider}
           onChange={(e) => updateField('currentProvider', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
           placeholder="Ex: Orange, Free, SFR..."
         />
       </div>
     </div>,
 
     <div key="step2" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Coordonnées
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Dernière <span className="text-accent-telecom">Étape</span>
       </h3>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nom complet *
-        </label>
+        <label>Nom complet *</label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => updateField('name', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
           placeholder="Votre nom"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Téléphone *
-        </label>
+        <label>Téléphone *</label>
         <input
           type="tel"
           value={formData.phone}
           onChange={(e) => updateField('phone', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
           placeholder="06 12 34 56 78"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Code postal *
-        </label>
+        <label>Code postal *</label>
         <input
           type="text"
           value={formData.postalCode}
           onChange={(e) => updateField('postalCode', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
           placeholder="75001"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email
-        </label>
+        <label>Email</label>
         <input
           type="email"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
           placeholder="votre@email.com"
         />
       </div>
@@ -194,7 +177,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
       currentStep={currentStep}
       setCurrentStep={setCurrentStep}
       onSubmit={handleSubmit}
-      canProceed={validateStep()}
+      canProceed={!!validateStep()}
     >
       {steps}
     </FormWizard>

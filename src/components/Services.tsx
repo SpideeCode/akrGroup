@@ -11,58 +11,71 @@ export default function Services({ onServiceClick }: ServicesProps) {
       title: 'ÉNERGIE',
       subtitle: 'Gaz & Électricité',
       icon: Zap,
-      color: 'text-blue-900',
-      bgColor: 'bg-blue-50',
+      accent: 'group-hover:bg-accent-energy',
+      border: 'border-accent-energy',
     },
     {
       id: 'solaire' as const,
       title: 'PANNEAUX SOLAIRES',
       subtitle: 'Étude & installation',
       icon: Sun,
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
+      accent: 'group-hover:bg-accent-solar',
+      border: 'border-accent-solar',
     },
     {
       id: 'telecom' as const,
       title: 'TÉLÉCOM',
       subtitle: 'Internet – TV – Téléphonie',
       icon: Radio,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      accent: 'group-hover:bg-accent-telecom',
+      border: 'border-accent-telecom',
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-4">
-          Nos Services
-        </h2>
-        <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-          Découvrez nos solutions sur mesure pour réduire vos factures
-        </p>
+    <section className="py-24 bg-brand-cream border-t border-brand-dark/10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div>
+            <h2 className="text-4xl md:text-6xl font-black font-montserrat uppercase tracking-tighter text-brand-dark mb-4">
+              Nos <span className="text-brand-muted">Expertises</span>
+            </h2>
+            <p className="text-xl text-brand-dark/60 font-medium max-w-xl">
+              Des solutions concrètes pour optimiser vos charges fixes et améliorer votre confort thermique et numérique.
+            </p>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-brand-dark/20">
+          {services.map((service, index) => (
             <div
               key={service.id}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 hover:scale-105"
+              className={`group relative p-10 bg-white transition-all duration-500 hover:z-10 ${index !== services.length - 1 ? 'md:border-r border-b md:border-b-0 border-brand-dark/20' : ''
+                }`}
             >
-              <div className={`${service.bgColor} ${service.color} w-16 h-16 rounded-lg flex items-center justify-center mb-6`}>
-                <service.icon className="w-8 h-8" />
+              {/* Overlay d'accentuation au survol */}
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 scale-95 group-hover:scale-100 transition-all duration-500 ${service.accent}`} />
+
+              <div className="relative z-10">
+                <div className={`w-14 h-14 mb-8 flex items-center justify-center border-2 border-brand-dark transition-transform duration-500 group-hover:-rotate-12`}>
+                  <service.icon className="w-6 h-6 text-brand-dark" />
+                </div>
+
+                <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-brand-dark/60 font-medium mb-10 leading-relaxed min-h-[3rem]">
+                  {service.subtitle}
+                </p>
+
+                <button
+                  onClick={() => onServiceClick(service.id)}
+                  className="inline-flex items-center gap-2 font-montserrat font-bold uppercase text-xs tracking-[0.2em] text-brand-dark group-hover:text-accent-energy transition-colors"
+                >
+                  Démarrer le devis
+                  <div className="w-8 h-px bg-brand-dark group-hover:bg-accent-energy transition-all group-hover:w-12" />
+                </button>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {service.subtitle}
-              </p>
-              <button
-                onClick={() => onServiceClick(service.id)}
-                className="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors duration-200"
-              >
-                Demander un devis
-              </button>
             </div>
           ))}
         </div>

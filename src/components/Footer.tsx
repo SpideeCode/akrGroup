@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Mail, Clock } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export default function Footer() {
@@ -45,112 +45,118 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-2xl font-bold mb-6">Contact rapide</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Nom *"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-                />
+    <footer className="bg-brand-dark text-white py-24 overflow-hidden relative">
+      {/* Background decoration */}
+      <div className="absolute bottom-0 right-0 text-[20vw] font-black font-montserrat text-white/[0.02] leading-none select-none translate-y-1/4">
+        AKR GROUP
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+
+          {/* Logo and About */}
+          <div className="lg:col-span-5">
+            <h3 className="text-4xl md:text-5xl font-black font-montserrat uppercase tracking-tighter mb-8 italic">
+              AKR<span className="text-accent-energy">.</span>Group
+            </h3>
+            <p className="text-xl text-white/50 font-medium mb-12 max-w-md leading-relaxed">
+              Nous redéfinissons la gestion de vos charges fixes avec une approche directe, transparente et axée sur la performance.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="w-10 h-10 flex items-center justify-center border border-white/20 group-hover:border-accent-energy transition-colors">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <a href="tel:+33123456789" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
+                  01 23 45 67 89
+                </a>
               </div>
-              <div>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="Téléphone *"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-                />
+
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="w-10 h-10 flex items-center justify-center border border-white/20 group-hover:border-accent-energy transition-colors">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <a href="mailto:contact@akr-group.fr" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
+                  contact@akr-group.fr
+                </a>
               </div>
-              <div>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="Email"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Envoi...' : 'Être rappelé'}
-              </button>
-              {message && (
-                <p className={`text-sm ${message.includes('erreur') ? 'text-red-400' : 'text-green-400'}`}>
-                  {message}
-                </p>
-              )}
-            </form>
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-2xl font-bold mb-6">AKR Group</h3>
-            <div className="space-y-4">
-              <div>
-                <p className="text-gray-300 mb-4">
-                  Votre conseiller dédié pour optimiser vos dépenses énergétiques et télécoms.
-                </p>
-                <p className="font-semibold text-blue-400">
-                  Conseiller : Akachar Abdelrahman
-                </p>
-              </div>
+          {/* Rapid Contact Form */}
+          <div className="lg:col-span-7">
+            <div className="bg-white/5 border border-white/10 p-8 md:p-12 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-energy/10 -mr-16 -mt-16 rounded-full blur-3xl transition-opacity opacity-0 group-hover:opacity-100" />
 
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-                <div>
-                  <p className="font-medium">Téléphone</p>
-                  <a href="tel:+33123456789" className="text-gray-300 hover:text-blue-400 transition-colors">
-                    01 23 45 67 89
-                  </a>
-                </div>
-              </div>
+              <h4 className="text-2xl font-black font-montserrat uppercase tracking-tight mb-8">
+                Un expert vous <span className="text-accent-energy">rappelle</span>
+              </h4>
 
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-                <div>
-                  <p className="font-medium">Email</p>
-                  <a href="mailto:contact@akr-group.fr" className="text-gray-300 hover:text-blue-400 transition-colors">
-                    contact@akr-group.fr
-                  </a>
+              <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-1">
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2 font-bold">Nom Complet</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Jean Dupont"
+                    className="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium"
+                  />
                 </div>
-              </div>
 
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-                <div>
-                  <p className="font-medium">Horaires</p>
-                  <p className="text-gray-300">Lun - Ven : 9h - 18h</p>
-                  <p className="text-gray-300">Sam : 10h - 16h</p>
+                <div className="md:col-span-1">
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2 font-bold">Numéro de Téléphone</label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="06 12 34 56 78"
+                    className="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium"
+                  />
                 </div>
-              </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2 font-bold">Adresse Email (Optionnel)</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="jean.dupont@email.com"
+                    className="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium"
+                  />
+                </div>
+
+                <div className="md:col-span-2 pt-4">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full md:w-auto px-12 py-4 bg-white text-brand-dark font-montserrat font-black uppercase tracking-widest text-sm hover:bg-accent-energy hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Envoi...' : 'Envoyer la demande'}
+                  </button>
+                </div>
+
+                {message && (
+                  <div className="md:col-span-2">
+                    <p className={`text-sm font-bold uppercase tracking-wider ${message.includes('erreur') ? 'text-accent-energy' : 'text-green-400'}`}>
+                      {message}
+                    </p>
+                  </div>
+                )}
+              </form>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <p>&copy; {new Date().getFullYear()} AKR Group. Tous droits réservés.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                Mentions légales
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                Politique de confidentialité
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                CGV
-              </a>
-            </div>
+        {/* Sub-footer */}
+        <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-[0.3em] font-bold text-white/30">
+          <p>&copy; {new Date().getFullYear()} AKR GROUP // TOUS DROITS RÉSERVÉS</p>
+          <div className="flex gap-12">
+            <a href="#" className="hover:text-white transition-colors underline decoration-accent-energy/30 underline-offset-4">Mentions Légales</a>
+            <a href="#" className="hover:text-white transition-colors underline decoration-accent-energy/30 underline-offset-4">Confidentialité</a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle, X } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 interface SuccessScreenProps {
   isOpen: boolean;
@@ -10,43 +10,37 @@ export default function SuccessScreen({ isOpen, onClose }: SuccessScreenProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-brand-dark/95 backdrop-blur-md z-[60] flex items-center justify-center p-4">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-brand-cream border-2 border-brand-dark max-w-md w-full p-12 text-center relative"
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        <div className="absolute -top-10 -left-10 w-32 h-32 bg-accent-energy/10 rounded-full blur-3xl" />
 
-        <div className="text-center">
+        <div className="relative z-10">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6"
+            initial={{ scale: 0, rotate: -45 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="inline-flex items-center justify-center w-24 h-24 border-2 border-brand-dark mb-8 mx-auto"
           >
-            <CheckCircle className="w-12 h-12 text-green-600" />
+            <CheckCircle className="w-12 h-12 text-accent-energy" />
           </motion.div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Merci !
+          <h2 className="text-4xl font-black font-montserrat uppercase tracking-tighter text-brand-dark mb-6">
+            Demande <span className="text-accent-energy">Transmise</span>
           </h2>
 
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-            Votre demande de devis gratuit a bien été envoyée. Un conseiller AKR Group vous recontactera rapidement.
+          <p className="text-lg text-brand-dark/60 font-medium mb-12 leading-relaxed">
+            Votre dossier est entre nos mains. Un expert AKR Group analysera vos données et reviendra vers vous sous 24h.
           </p>
 
           <button
             onClick={onClose}
-            className="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
+            className="w-full px-8 py-4 bg-brand-dark text-white font-montserrat font-black uppercase tracking-widest text-sm hover:bg-accent-energy transition-all shadow-[8px_8px_0px_0px_rgba(26,26,26,0.1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
           >
-            Fermer
+            Retour au site
           </button>
         </div>
       </motion.div>

@@ -116,23 +116,23 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
   const steps = [
     <div key="step1" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Adresse et Statut
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Adresse et <span className="text-accent-energy">Statut</span>
       </h3>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-[10px] uppercase tracking-[0.2em] font-black text-brand-muted mb-3">
           Adresse complète *
         </label>
         <input
           type="text"
           value={formData.address}
           onChange={(e) => updateField('address', e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
+          className="w-full bg-transparent border-b-2 border-brand-dark py-4 focus:outline-none focus:border-accent-energy transition-colors font-medium text-lg"
           placeholder="Rue, numéro, code postal, ville"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-[10px] uppercase tracking-[0.2em] font-black text-brand-muted mb-4">
           Statut *
         </label>
         <div className="grid grid-cols-2 gap-4">
@@ -140,11 +140,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('status', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.status === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.status === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -154,8 +151,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
     </div>,
 
     <div key="step2" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Énergie et Compteur
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Énergie et <span className="text-accent-energy">Compteur</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -166,11 +163,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('energie', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.energie === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.energie === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -186,11 +180,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('meterType', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.meterType === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.meterType === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -215,8 +206,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
     </div>,
 
     <div key="step3" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Situation
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Votre <span className="text-accent-energy">Situation</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -227,11 +218,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('hasSolar', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.hasSolar === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.hasSolar === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -253,8 +241,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
     </div>,
 
     <div key="step4" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Habitation
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Informations <span className="text-accent-energy">Habitation</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -265,11 +253,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('housingType', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.housingType === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.housingType === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -323,8 +308,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
     </div>,
 
     <div key="step5" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Options
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Quelques <span className="text-accent-energy">Options</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -335,11 +320,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('hasCar', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.hasCar === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.hasCar === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -355,11 +337,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option}
               onClick={() => updateField('hasHeatPump', option)}
-              className={`p-4 border-2 rounded-lg font-medium transition-all ${
-                formData.hasHeatPump === option
-                  ? 'border-blue-900 bg-blue-50 text-blue-900'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
+              className={`btn-option ${formData.hasHeatPump === option ? 'btn-option-active' : 'btn-option-inactive'
+                }`}
             >
               {option}
             </button>
@@ -369,8 +348,8 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
     </div>,
 
     <div key="step6" className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">
-        Coordonnées
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Dernière <span className="text-accent-energy">Étape</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -430,7 +409,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
       currentStep={currentStep}
       setCurrentStep={setCurrentStep}
       onSubmit={handleSubmit}
-      canProceed={validateStep()}
+      canProceed={!!validateStep()}
     >
       {steps}
     </FormWizard>
