@@ -32,6 +32,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'energie' | 'solaire' | 'telecom'>('all');
     const [searchTerm, setSearchTerm] = useState('');
+    const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
 
     const fetchRequests = async () => {
         setLoading(true);
@@ -77,7 +78,11 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             req.contact_phone.includes(searchTerm) ||
             (req.contact_email?.toLowerCase().includes(searchTerm.toLowerCase()));
 
-        return matchesFilter && matchesSearch;
+        const matchesTab = activeTab === 'active'
+            ? (req.status === 'pending' || req.status === 'contacted')
+            : req.status === 'completed';
+
+        return matchesFilter && matchesSearch && matchesTab;
     });
 
     const getStatusColor = (status: string) => {
@@ -133,8 +138,50 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </header>
 
             <main className="max-w-7xl mx-auto p-6 md:p-8">
+                {/* Stats Summary */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                    <div className="bg-white border-2 border-brand-dark p-6">
+                        <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] mb-2">Total</p>
+                        <p className="text-4xl font-black text-brand-dark">{requests.length}</p>
+                    </div>
+                    <div className="bg-white border-2 border-brand-dark p-6">
+                        <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] mb-2">En attente</p>
+                        <p className="text-4xl font-black text-brand-dark">{requests.filter(r => r.status === 'pending').length}</p>
+                    </div>
+                    <div className="bg-white border-2 border-brand-dark p-6">
+                        <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] mb-2">Contactés</p>
+                        <p className="text-4xl font-black text-brand-dark">{requests.filter(r => r.status === 'contacted').length}</p>
+                    </div>
+                    <div className="bg-white border-2 border-brand-dark p-6">
+                        <p className="text-[10px] font-black text-brand-muted uppercase tracking-[0.2em] mb-2">Terminés</p>
+                        <p className="text-4xl font-black text-brand-dark">{requests.filter(r => r.status === 'completed').length}</p>
+                    </div>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex border-b-2 border-brand-dark mb-8">
+                    <button
+                        onClick={() => setActiveTab('active')}
+                        className={`px-8 py-4 font-black uppercase text-sm tracking-widest transition-all ${activeTab === 'active'
+                            ? 'bg-brand-dark text-white'
+                            : 'text-brand-dark hover:bg-brand-dark/5'
+                            }`}
+                    >
+                        Dossiers en cours ({requests.filter(r => r.status !== 'completed').length})
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('completed')}
+                        className={`px-8 py-4 font-black uppercase text-sm tracking-widest transition-all ${activeTab === 'completed'
+                            ? 'bg-brand-dark text-white'
+                            : 'text-brand-dark hover:bg-brand-dark/5'
+                            }`}
+                    >
+                        Dossiers terminés ({requests.filter(r => r.status === 'completed').length})
+                    </button>
+                </div>
+
                 {/* Controls */}
-                <div className="flex flex-col md:flex-row gap-4 mb-12">
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
                     <div className="flex-1 relative">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={20} />
                         <input
@@ -157,22 +204,6 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                 {type === 'all' ? 'Tous' : type}
                             </button>
                         ))}
-                    </div>
-                </div>
-
-                {/* Stats Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <div className="bg-white border-2 border-brand-dark p-6">
-                        <p className="text-xs font-black text-brand-muted uppercase tracking-widest mb-2">Total Demandes</p>
-                        <p className="text-4xl font-black text-brand-dark">{requests.length}</p>
-                    </div>
-                    <div className="bg-white border-2 border-brand-dark p-6">
-                        <p className="text-xs font-black text-brand-muted uppercase tracking-widest mb-2">En attente</p>
-                        <p className="text-4xl font-black text-brand-dark">{requests.filter(r => r.status === 'pending').length}</p>
-                    </div>
-                    <div className="bg-white border-2 border-brand-dark p-6">
-                        <p className="text-xs font-black text-brand-muted uppercase tracking-widest mb-2">Traitées</p>
-                        <p className="text-4xl font-black text-brand-dark">{requests.filter(r => r.status === 'completed').length}</p>
                     </div>
                 </div>
 
