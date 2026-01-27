@@ -73,8 +73,8 @@ export default function Footer() {
                 <div className="w-10 h-10 flex items-center justify-center border border-white/20 group-hover:border-accent-energy transition-colors">
                   <Phone className="w-4 h-4" />
                 </div>
-                <a href="tel:+33123456789" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
-                  01 23 45 67 89
+                <a href="tel:+32123456789" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
+                  +32 484 43 00 83
                 </a>
               </div>
 
@@ -82,8 +82,8 @@ export default function Footer() {
                 <div className="w-10 h-10 flex items-center justify-center border border-white/20 group-hover:border-accent-energy transition-colors">
                   <Mail className="w-4 h-4" />
                 </div>
-                <a href="mailto:contact@akr-group.fr" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
-                  contact@akr-group.fr
+                <a href="mailto:abdel.akachar12@gmail.com" className="text-lg font-montserrat font-bold hover:text-accent-energy transition-colors">
+                  abdel.akachar12@gmail.com
                 </a>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Footer() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="06 12 34 56 78"
+                    placeholder="04 12 34 56 78"
                     className="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium"
                   />
                 </div>
@@ -129,7 +129,7 @@ export default function Footer() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="jean.dupont@email.com"
+                    placeholder="jean.dupont@gmail.com"
                     className="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-accent-energy transition-colors font-medium"
                   />
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Lock, Mail, Loader2, ArrowLeft } from 'lucide-react';
+import { Lock, Mail, Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 interface AdminLoginProps {
     onLogin: () => void;
@@ -10,6 +10,7 @@ interface AdminLoginProps {
 export default function AdminLogin({ onLogin, onBack }: AdminLoginProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -70,7 +71,7 @@ export default function AdminLogin({ onLogin, onBack }: AdminLoginProps) {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full pl-12 pr-4 py-4 border-2 border-brand-dark focus:bg-brand-cream outline-none transition-colors font-medium"
-                                    placeholder="admin@akrgroup.com"
+                                    placeholder="admin@akrgroup.be"
                                 />
                             </div>
                         </div>
@@ -82,13 +83,20 @@ export default function AdminLogin({ onLogin, onBack }: AdminLoginProps) {
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" size={18} />
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-4 border-2 border-brand-dark focus:bg-brand-cream outline-none transition-colors font-medium"
+                                    className="w-full pl-12 pr-12 py-4 border-2 border-brand-dark focus:bg-brand-cream outline-none transition-colors font-medium"
                                     placeholder="••••••••"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-dark transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                             </div>
                         </div>
 
