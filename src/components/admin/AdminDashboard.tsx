@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import {
     BarChart3,
-    ChevronRight,
     Clock,
     Mail,
     Phone,
     RefreshCw,
     Search,
-    AlertCircle
+    AlertCircle,
+    Trash2
 } from 'lucide-react';
 
 interface QuoteRequest {
@@ -68,6 +68,23 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             ));
         } catch (err) {
             console.error('Error updating status:', err);
+        }
+    };
+
+    const deleteRequest = async (id: string) => {
+        if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) return;
+
+        try {
+            const { error } = await supabase
+                .from('quote_requests')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            setRequests(requests.filter(req => req.id !== id));
+        } catch (err) {
+            console.error('Error deleting request:', err);
+            alert('Erreur lors de la suppression');
         }
     };
 
@@ -289,8 +306,11 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                             </select>
                                         </div>
 
-                                        <button className="flex items-center justify-center gap-2 px-4 py-3 bg-brand-dark text-white font-black uppercase text-[10px] tracking-widest hover:bg-opacity-80 transition-all">
-                                            <ChevronRight size={14} /> Voir dossier
+                                        <button
+                                            onClick={() => deleteRequest(request.id)}
+                                            className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-red-500 text-red-500 font-black uppercase text-[10px] tracking-widest hover:bg-red-500 hover:text-white transition-all"
+                                        >
+                                            <Trash2 size={14} /> Supprimer
                                         </button>
                                     </div>
                                 </div>
