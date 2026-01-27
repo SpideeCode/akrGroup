@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 export default function Footer() {
@@ -23,13 +24,17 @@ export default function Footer() {
     setMessage('');
 
     try {
-      const { error } = await supabase.from('quote_requests').insert({
+      const { error } = await supabase.from('quote_requests').upsert({
         service_type: 'telecom',
         form_data: { type: 'quick_contact', ...formData },
         contact_name: formData.name,
         contact_email: formData.email || null,
         contact_phone: formData.phone,
         contact_postal_code: null,
+        status: 'pending',
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'service_type,contact_phone'
       });
 
       if (error) throw error;
@@ -157,6 +162,7 @@ export default function Footer() {
           <div className="flex gap-12">
             <a href="#" className="hover:text-white transition-colors underline decoration-accent-energy/30 underline-offset-4">Mentions Légales</a>
             <a href="#" className="hover:text-white transition-colors underline decoration-accent-energy/30 underline-offset-4">Confidentialité</a>
+            <Link to="/admin/login" className="hover:text-white transition-colors">Admin</Link>
           </div>
         </div>
       </div>

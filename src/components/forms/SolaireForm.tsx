@@ -57,13 +57,17 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
 
   const handleSubmit = async () => {
     try {
-      const { error } = await supabase.from('quote_requests').insert({
+      const { error } = await supabase.from('quote_requests').upsert({
         service_type: 'solaire',
         form_data: formData,
         contact_name: formData.name,
         contact_email: formData.email || null,
         contact_phone: formData.phone,
         contact_postal_code: formData.postalCode || null,
+        status: 'pending',
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'service_type,contact_phone'
       });
 
       if (error) throw error;

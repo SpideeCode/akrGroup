@@ -52,13 +52,17 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
 
   const handleSubmit = async () => {
     try {
-      const { error } = await supabase.from('quote_requests').insert({
+      const { error } = await supabase.from('quote_requests').upsert({
         service_type: 'telecom',
         form_data: formData,
         contact_name: formData.name,
         contact_email: formData.email || null,
         contact_phone: formData.phone,
         contact_postal_code: formData.postalCode,
+        status: 'pending',
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'service_type,contact_phone'
       });
 
       if (error) throw error;
@@ -95,14 +99,14 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
               key={service}
               onClick={() => toggleService(service)}
               className={`w-full p-4 border-2 font-montserrat font-bold uppercase text-xs tracking-widest transition-all text-left ${formData.services.includes(service)
-                  ? 'border-brand-dark bg-brand-dark text-white'
-                  : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60'
+                ? 'border-brand-dark bg-brand-dark text-white'
+                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60'
                 }`}
             >
               <span className="flex items-center gap-4">
                 <span className={`w-5 h-5 border-2 flex items-center justify-center transition-colors ${formData.services.includes(service)
-                    ? 'border-white bg-white'
-                    : 'border-brand-dark/20'
+                  ? 'border-white bg-white'
+                  : 'border-brand-dark/20'
                   }`}>
                   {formData.services.includes(service) && (
                     <svg className="w-3 h-3 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">

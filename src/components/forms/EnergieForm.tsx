@@ -75,13 +75,17 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
   const handleSubmit = async () => {
     try {
-      const { error } = await supabase.from('quote_requests').insert({
+      const { error } = await supabase.from('quote_requests').upsert({
         service_type: 'energie',
         form_data: formData,
         contact_name: formData.name,
         contact_email: formData.email || null,
         contact_phone: formData.phone,
         contact_postal_code: formData.postalCode || null,
+        status: 'pending', // Revenir en attente si mise à jour
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'service_type,contact_phone'
       });
 
       if (error) throw error;

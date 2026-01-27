@@ -12,14 +12,14 @@ export default function Hero({ onDevisClick }: HeroProps) {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
-          <h1 className="text-6xl md:text-8xl lg:text-[120px] font-black font-montserrat leading-[0.9] tracking-tighter text-brand-dark mb-8 uppercase">
-            Moins de <span className="text-accent-energy">frais</span>.<br />
-            Plus de <span className="text-brand-muted">vie</span>.
+          <h1 className="text-6xl md:text-8xl lg:text-[100px] font-black font-montserrat leading-[1.1] tracking-tighter text-brand-dark mb-8 uppercase">
+            Optimisez vos <span className="text-accent-energy">dépenses</span>,<br />
+            vivez <span className="text-brand-muted">mieux</span>.
           </h1>
 
           <div className="flex flex-col md:flex-row md:items-end gap-8 mt-12">
             <p className="text-xl md:text-2xl text-brand-dark/70 font-medium max-w-xl leading-snug">
-              Nous optimisons vos factures d'énergie, de télécom et vos installations solaires pour un quotidien libéré.
+              Nous permettons aux particuliers de trouver des solutions ; pour cela, nous sommes spécialisés dans les charges domestiques.
             </p>
 
             <button
