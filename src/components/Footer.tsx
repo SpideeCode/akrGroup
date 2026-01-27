@@ -146,7 +146,7 @@ export default function Footer() {
 
                 {message && (
                   <div className="md:col-span-2">
-                    <p className={`text-sm font-bold uppercase tracking-wider ${message.includes('erreur') ? 'text-accent-energy' : 'text-green-400'}`}>
+                    <p className={`text-sm font-bold uppercase tracking-wider ${message.includes('erreur') ? 'text-red-500' : 'text-green-400'}`}>
                       {message}
                     </p>
                   </div>

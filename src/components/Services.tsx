@@ -46,18 +46,18 @@ export default function Services({ onServiceClick }: ServicesProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-brand-dark/20">
-          {services.map((service, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {services.map((service) => (
             <div
               key={service.id}
-              className={`group relative p-10 bg-white transition-all duration-500 hover:z-10 ${index !== services.length - 1 ? 'md:border-r border-b md:border-b-0 border-brand-dark/20' : ''
-                }`}
+              onClick={() => onServiceClick(service.id)}
+              className="group relative p-10 bg-white border-2 border-brand-dark transition-all duration-500 hover:z-10 hover:border-accent-energy cursor-pointer flex flex-col items-start"
             >
               {/* Overlay d'accentuation au survol */}
-              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 scale-95 group-hover:scale-100 transition-all duration-500 ${service.accent}`} />
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-5 transition-all duration-500 ${service.accent}`} />
 
-              <div className="relative z-10">
-                <div className={`w-14 h-14 mb-8 flex items-center justify-center border-2 border-brand-dark transition-transform duration-500 group-hover:-rotate-12`}>
+              <div className="relative z-10 w-full flex flex-col h-full">
+                <div className="w-14 h-14 mb-8 flex items-center justify-center border-2 border-brand-dark transition-transform duration-500 group-hover:-rotate-12 bg-white">
                   <service.icon className="w-6 h-6 text-brand-dark" />
                 </div>
 
@@ -68,13 +68,12 @@ export default function Services({ onServiceClick }: ServicesProps) {
                   {service.subtitle}
                 </p>
 
-                <button
-                  onClick={() => onServiceClick(service.id)}
-                  className="inline-flex items-center gap-2 font-montserrat font-bold uppercase text-xs tracking-[0.2em] text-brand-dark group-hover:text-accent-energy transition-colors"
-                >
-                  Démarrer le devis
-                  <div className="w-8 h-px bg-brand-dark group-hover:bg-accent-energy transition-all group-hover:w-12" />
-                </button>
+                <div className="mt-auto pt-4">
+                  <div className="inline-flex items-center gap-4 px-6 py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest transition-all group-hover:bg-accent-energy group-hover:translate-x-2">
+                    Démarrer
+                    <div className="w-8 h-px bg-white/30 group-hover:w-12 transition-all" />
+                  </div>
+                </div>
               </div>
             </div>
           ))}

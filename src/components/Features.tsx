@@ -32,12 +32,11 @@ export default function Features() {
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-brand-dark">
-                    {steps.map((step, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {steps.map((step) => (
                         <div
                             key={step.number}
-                            className={`group p-10 bg-white hover:bg-brand-dark transition-all duration-500 ${index !== steps.length - 1 ? 'md:border-r border-b md:border-b-0 border-brand-dark' : ''
-                                }`}
+                            className="group p-10 bg-white border-2 border-brand-dark hover:bg-brand-dark transition-all duration-500"
                         >
                             <div className="flex justify-between items-start mb-12">
                                 <div className="w-12 h-12 flex items-center justify-center border-2 border-brand-dark group-hover:border-accent-solar group-hover:bg-accent-solar transition-colors duration-500">

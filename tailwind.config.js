@@ -10,9 +10,9 @@ export default {
           muted: '#808080',
         },
         accent: {
-          energy: '#FF4D00', // Un orange vibrant pour l'énergie
-          solar: '#FFB800',  // Un jaune solaire
-          telecom: '#0066FF', // Un bleu technologique
+          energy: '#2563EB', // Bleu Royal plus clair
+          solar: '#38BDF8',  // Bleu Ciel
+          telecom: '#60A5FA', // Bleu Doux
         }
       },
       fontFamily: {

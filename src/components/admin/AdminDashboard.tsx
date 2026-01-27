@@ -90,9 +90,9 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
     const getServiceColor = (type: string) => {
         switch (type) {
-            case 'energie': return 'bg-[#FFD700]';
-            case 'solaire': return 'bg-[#FFA500]';
-            case 'telecom': return 'bg-[#00BFFF]';
+            case 'energie': return 'bg-[#2563EB]';
+            case 'solaire': return 'bg-[#38BDF8]';
+            case 'telecom': return 'bg-[#60A5FA]';
             default: return 'bg-gray-400';
         }
     };
