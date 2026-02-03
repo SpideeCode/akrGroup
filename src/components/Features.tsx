@@ -1,56 +1,41 @@
-import { Search, PenTool, TrendingDown } from 'lucide-react';
+import { Search, UserCheck, TrendingDown } from 'lucide-react';
 
 export default function Features() {
     const steps = [
         {
-            title: 'Audit Gratuit',
-            description: 'Nous analysons en détail vos contrats actuels et vos habitudes de consommation pour identifier les leviers d\'économies.',
+            title: 'Analyse gratuite de votre situation',
+            description: 'Analyse des contrats et habitudes de consommation pour identifier des économies.',
             icon: Search,
-            number: '01',
+            color: 'text-accent-energy',
         },
         {
-            title: 'Expertise Dédiée',
-            description: 'Nos conseillers sélectionnent les offres les plus compétitives du marché, adaptées à votre profil et à vos besoins réels.',
-            icon: PenTool,
-            number: '02',
+            title: 'Un accompagnement personnalisé',
+            description: 'Un expert analyse le profil et accompagne dans les choix adaptés.',
+            icon: UserCheck,
+            color: 'text-accent-solar',
         },
         {
-            title: 'Économies Réelles',
-            description: 'Bénéficiez d\'une réduction immédiate sur vos factures. Nous gérons toute la transition administrative pour vous.',
+            title: 'Réduisez vos dépenses',
+            description: 'Aide à diminuer les factures avec un accompagnement simple, sans démarches complexes.',
             icon: TrendingDown,
-            number: '03',
+            color: 'text-accent-telecom',
         },
     ];
 
     return (
-        <section className="py-24 bg-brand-cream border-t border-brand-dark/10">
+        <section className="py-20 bg-brand-cream border-t border-brand-dark/5">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
-                <div className="mb-16 max-w-2xl">
-                    <span className="text-accent-energy text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Notre Mission</span>
-                    <h2 className="text-3xl md:text-4xl font-black font-montserrat uppercase tracking-tighter text-brand-dark leading-tight">
-                        Notre objectif est de mettre les clients en relation avec nos <span className="text-brand-muted italic">partenaires</span>.
-                    </h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {steps.map((step) => (
-                        <div
-                            key={step.number}
-                            className="group p-10 bg-white border-2 border-brand-dark hover:bg-brand-dark transition-all duration-500"
-                        >
-                            <div className="flex justify-between items-start mb-12">
-                                <div className="w-12 h-12 flex items-center justify-center border-2 border-brand-dark group-hover:border-accent-solar group-hover:bg-accent-solar transition-colors duration-500">
-                                    <step.icon className="w-5 h-5 text-brand-dark group-hover:text-white" />
-                                </div>
-                                <span className="text-4xl font-black font-montserrat text-brand-dark/10 group-hover:text-white/10 transition-colors duration-500">
-                                    {step.number}
-                                </span>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+                    {steps.map((step, index) => (
+                        <div key={index} className="flex flex-col items-center md:items-start group">
+                            <div className={`mb-6 p-4 rounded-full bg-white shadow-sm ${step.color} transition-transform group-hover:scale-110 duration-300`}>
+                                <step.icon className="w-10 h-10" />
                             </div>
 
-                            <h3 className="text-xl font-black font-montserrat uppercase tracking-tight text-brand-dark group-hover:text-white mb-4 transition-colors">
+                            <h3 className="text-xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-4 group-hover:text-brand-primary transition-colors">
                                 {step.title}
                             </h3>
-                            <p className="text-brand-dark/60 group-hover:text-white/60 font-medium leading-relaxed transition-colors">
+                            <p className="text-brand-dark/70 font-medium leading-relaxed">
                                 {step.description}
                             </p>
                         </div>

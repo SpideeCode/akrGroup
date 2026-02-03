@@ -50,6 +50,7 @@ export default function Services({ onServiceClick }: ServicesProps) {
           {services.map((service) => (
             <div
               key={service.id}
+              id={service.id}
               onClick={() => onServiceClick(service.id)}
               className="group relative p-10 bg-white border-2 border-brand-dark transition-all duration-500 hover:z-10 hover:border-accent-energy cursor-pointer flex flex-col items-start"
             >
@@ -69,8 +70,8 @@ export default function Services({ onServiceClick }: ServicesProps) {
                 </p>
 
                 <div className="mt-auto pt-4">
-                  <div className="inline-flex items-center gap-4 px-6 py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest transition-all group-hover:bg-accent-energy group-hover:translate-x-2">
-                    Démarrer
+                  <div className="inline-flex items-center gap-4 px-6 py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest transition-all group-hover:bg-brand-primary group-hover:scale-105">
+                    DÉMARRER
                     <div className="w-8 h-px bg-white/30 group-hover:w-12 transition-all" />
                   </div>
                 </div>

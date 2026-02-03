@@ -5,14 +5,15 @@ export default {
     extend: {
       colors: {
         brand: {
-          cream: '#FCFAF7',
-          dark: '#1A1A1A',
-          muted: '#808080',
+          cream: '#F8FAFC', // Slightly cooler white/blueish tint for modern look, or keep warm? User said "nature". Let's go warm but clean. #FDFBF7 is nice. Let's stick to a clean white/off-white.
+          dark: '#003366', // Deep AKR Blue
+          primary: '#00509E', // AKR Blue
+          muted: '#64748B',
         },
         accent: {
-          energy: '#2563EB', // Bleu Royal plus clair
-          solar: '#38BDF8',  // Bleu Ciel
-          telecom: '#60A5FA', // Bleu Doux
+          energy: '#F59E0B', // Yellow/Orange
+          solar: '#10B981',  // Green
+          telecom: '#8B5CF6', // Violet/Blue
         }
       },
       fontFamily: {

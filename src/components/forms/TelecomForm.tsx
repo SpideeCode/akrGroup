@@ -9,54 +9,94 @@ interface TelecomFormProps {
 }
 
 interface FormData {
+  provider: string;
+  monthlyBill: string;
+  isEngaged: string;
+  engagementDuration: string;
+  satisfactionIssues: string[];
   name: string;
-  phone: string;
   email: string;
+  phone: string;
   postalCode: string;
-  services: string[];
-  currentProvider: string;
 }
 
 export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
+    provider: '',
+    monthlyBill: '',
+    isEngaged: '',
+    engagementDuration: '',
+    satisfactionIssues: [],
     name: '',
-    phone: '',
     email: '',
+    phone: '',
     postalCode: '',
-    services: [],
-    currentProvider: '',
   });
 
-  const updateField = (field: keyof FormData, value: string | string[]) => {
-    setFormData({ ...formData, [field]: value });
+  const updateField = (field: keyof FormData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const toggleService = (service: string) => {
-    const services = formData.services.includes(service)
-      ? formData.services.filter((s) => s !== service)
-      : [...formData.services, service];
-    updateField('services', services);
+  const toggleIssue = (issue: string) => {
+    const issues = formData.satisfactionIssues.includes(issue)
+      ? formData.satisfactionIssues.filter(i => i !== issue)
+      : [...formData.satisfactionIssues, issue];
+    updateField('satisfactionIssues', issues);
   };
 
   const validateStep = () => {
     switch (currentStep) {
-      case 0:
-        return formData.services.length > 0 && formData.currentProvider;
-      case 1:
-        return formData.name && formData.phone && formData.postalCode;
+      case 0: // Provider
+        return !!formData.provider;
+      case 1: // Bill
+        return !!formData.monthlyBill;
+      case 2: // Engagement
+        if (formData.isEngaged === 'non') return true;
+        if (formData.isEngaged === 'oui') return !!formData.engagementDuration;
+        return false;
+      case 3: // Satisfaction
+        return formData.satisfactionIssues.length > 0;
+      case 4: // Contact
+        return !!formData.name && !!formData.email && !!formData.phone && !!formData.postalCode;
       default:
         return false;
     }
   };
 
+  const handleStepChange = (newStep: number) => {
+    // Logic for skipping steps if "Pas encore de fournisseur"
+    if (formData.provider === 'Pas encore de fournisseur') {
+      if (newStep > 0 && newStep < 4) {
+        // If trying to go to 1, 2, or 3, skip to:
+        // Forward: 0 -> 4
+        // Backward: 4 -> 0
+        if (currentStep === 0) {
+          setCurrentStep(4);
+        } else if (currentStep === 4) {
+          setCurrentStep(0);
+        }
+        return;
+      }
+    }
+    setCurrentStep(newStep);
+  };
+
   const handleSubmit = async () => {
     try {
+      // Prepare localized data for Admin
+      const adminData = {
+        "Fournisseur": formData.provider,
+        "Facture Mensuelle": formData.provider === 'Pas encore de fournisseur' ? 'N/A' : `${formData.monthlyBill}€`,
+        "Engagé": formData.provider === 'Pas encore de fournisseur' ? 'N/A' : (formData.isEngaged === 'oui' ? `Oui (${formData.engagementDuration})` : 'Non'),
+        "Problèmes signalés": formData.provider === 'Pas encore de fournisseur' ? 'N/A' : formData.satisfactionIssues.join(', '),
+      };
+
       const { error } = await supabase.from('quote_requests').upsert({
         service_type: 'telecom',
-        form_data: formData,
+        form_data: adminData,
         contact_name: formData.name,
-        contact_email: formData.email || null,
+        contact_email: formData.email,
         contact_phone: formData.phone,
         contact_postal_code: formData.postalCode,
         status: 'pending',
@@ -71,12 +111,15 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
       onClose();
       setCurrentStep(0);
       setFormData({
+        provider: '',
+        monthlyBill: '',
+        isEngaged: '',
+        engagementDuration: '',
+        satisfactionIssues: [],
         name: '',
-        phone: '',
         email: '',
+        phone: '',
         postalCode: '',
-        services: [],
-        currentProvider: '',
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -84,91 +127,176 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
     }
   };
 
+  const providers = ['Proximus', 'Orange', 'Voo', 'Telenet', 'EDPnet', 'Pas encore de fournisseur', 'Autre'];
+  const engagementDurations = ['Moins d’un an', 'Plus d’un an', 'Je ne sais pas'];
+  const satisfactionOptions = ['Qualité réseau', 'Prix', 'Service client', 'Coupure assez fréquente', 'Je suis assez satisfait', 'Autre'];
+
   const steps = [
+    // Step 1: Provider
     <div key="step1" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Besoin <span className="text-accent-telecom">Télécom</span>
+        Quel est votre <span className="text-accent-telecom">fournisseur</span> d'internet ? *
       </h3>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Quels services vous intéressent ? *
-        </label>
-        <div className="space-y-3">
-          {['Internet', 'TV', 'Téléphonie fixe', 'Mobile'].map((service) => (
-            <button
-              key={service}
-              onClick={() => toggleService(service)}
-              className={`w-full p-4 border-2 font-montserrat font-bold uppercase text-xs tracking-widest transition-all text-left ${formData.services.includes(service)
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {providers.map((p) => (
+          <button
+            key={p}
+            onClick={() => updateField('provider', p)}
+            className={`p-4 border-2 font-montserrat font-bold text-sm transition-all ${formData.provider === p
                 ? 'border-brand-dark bg-brand-dark text-white'
-                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60'
-                }`}
-            >
-              <span className="flex items-center gap-4">
-                <span className={`w-5 h-5 border-2 flex items-center justify-center transition-colors ${formData.services.includes(service)
-                  ? 'border-white bg-white'
-                  : 'border-brand-dark/20'
-                  }`}>
-                  {formData.services.includes(service) && (
-                    <svg className="w-3 h-3 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </span>
-                {service}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <div>
-        <label>Opérateur actuel *</label>
-        <input
-          type="text"
-          value={formData.currentProvider}
-          onChange={(e) => updateField('currentProvider', e.target.value)}
-          placeholder="Ex: Orange, Free, SFR..."
-        />
+                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              }`}
+          >
+            {p}
+          </button>
+        ))}
       </div>
     </div>,
 
+    // Step 2: Bill
     <div key="step2" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Dernière <span className="text-accent-telecom">Étape</span>
+        Combien <span className="text-accent-telecom">payez-vous</span> par mois ?
+      </h3>
+      <div className="relative">
+        <input
+          type="number"
+          value={formData.monthlyBill}
+          onChange={(e) => updateField('monthlyBill', e.target.value)}
+          placeholder="Ex: 65"
+          className="w-full text-4xl font-black text-brand-dark border-b-4 border-brand-dark/10 focus:border-accent-telecom outline-none py-4 bg-transparent text-center placeholder:text-brand-dark/20"
+        />
+        <span className="absolute right-1/4 top-1/2 -translate-y-1/2 text-2xl font-bold text-brand-dark/30">€</span>
+      </div>
+    </div>,
+
+    // Step 3: Engagement
+    <div key="step3" className="space-y-8">
+      <div>
+        <h3 className="text-xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-4">
+          Êtes-vous <span className="text-accent-telecom">engagés</span> actuellement ?
+        </h3>
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => {
+              updateField('isEngaged', 'oui');
+              updateField('engagementDuration', ''); // Reset duration if re-clicking
+            }}
+            className={`p-4 border-2 text-left font-montserrat font-bold text-sm transition-all ${formData.isEngaged === 'oui'
+                ? 'border-brand-dark bg-brand-dark text-white'
+                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              }`}
+          >
+            Oui, je suis toujours engagé
+          </button>
+          <button
+            onClick={() => {
+              updateField('isEngaged', 'non');
+              updateField('engagementDuration', '');
+            }}
+            className={`p-4 border-2 text-left font-montserrat font-bold text-sm transition-all ${formData.isEngaged === 'non'
+                ? 'border-brand-dark bg-brand-dark text-white'
+                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              }`}
+          >
+            Non, je ne suis plus engagé
+          </button>
+        </div>
+      </div>
+
+      {formData.isEngaged === 'oui' && (
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <h4 className="text-sm font-black font-montserrat uppercase tracking-widest text-brand-muted mb-4">
+            Depuis combien de temps ?
+          </h4>
+          <div className="grid grid-cols-1 gap-3">
+            {engagementDurations.map(d => (
+              <button
+                key={d}
+                onClick={() => updateField('engagementDuration', d)}
+                className={`p-3 border-2 font-montserrat font-bold text-xs transition-all ${formData.engagementDuration === d
+                    ? 'border-accent-telecom bg-accent-telecom text-white'
+                    : 'border-brand-dark/10 hover:border-accent-telecom/50 text-brand-dark/60'
+                  }`}
+              >
+                {d}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>,
+
+    // Step 4: Satisfaction
+    <div key="step4" className="space-y-6">
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Quels <span className="text-accent-telecom">problèmes</span> rencontrez-vous ?
+      </h3>
+      <p className="text-sm text-brand-muted font-medium mb-4">Plusieurs choix possibles</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {satisfactionOptions.map((option) => (
+          <button
+            key={option}
+            onClick={() => toggleIssue(option)}
+            className={`p-3 border-2 font-montserrat font-bold text-xs transition-all text-left flex items-center justify-between ${formData.satisfactionIssues.includes(option)
+                ? 'border-accent-telecom bg-accent-telecom text-white'
+                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              }`}
+          >
+            {option}
+            {formData.satisfactionIssues.includes(option) && (
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>,
+
+    // Step 5: Contact
+    <div key="step5" className="space-y-6">
+      <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
+        Vos <span className="text-accent-telecom">Coordonnées</span>
       </h3>
       <div>
-        <label>Nom complet *</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Nom *</label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => updateField('name', e.target.value)}
-          placeholder="Votre nom"
+          placeholder="E.g John Doe"
+          className="w-full bg-white border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-telecom focus:outline-none transition-colors"
         />
       </div>
       <div>
-        <label>Téléphone *</label>
-        <input
-          type="tel"
-          value={formData.phone}
-          onChange={(e) => updateField('phone', e.target.value)}
-          placeholder="06 12 34 56 78"
-        />
-      </div>
-      <div>
-        <label>Code postal *</label>
-        <input
-          type="text"
-          value={formData.postalCode}
-          onChange={(e) => updateField('postalCode', e.target.value)}
-          placeholder="75001"
-        />
-      </div>
-      <div>
-        <label>Email</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Email Address *</label>
         <input
           type="email"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          placeholder="votre@email.com"
+          placeholder="E.g John@doe.com"
+          className="w-full bg-white border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-telecom focus:outline-none transition-colors"
+        />
+      </div>
+      <div>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Phone *</label>
+        <input
+          type="tel"
+          value={formData.phone}
+          onChange={(e) => updateField('phone', e.target.value)}
+          placeholder="0470 12 34 56"
+          className="w-full bg-white border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-telecom focus:outline-none transition-colors"
+        />
+      </div>
+      <div>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Code Postale *</label>
+        <input
+          type="text"
+          value={formData.postalCode}
+          onChange={(e) => updateField('postalCode', e.target.value)}
+          placeholder="1000"
+          className="w-full bg-white border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-telecom focus:outline-none transition-colors"
         />
       </div>
     </div>,
@@ -179,7 +307,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
       isOpen={isOpen}
       onClose={onClose}
       currentStep={currentStep}
-      setCurrentStep={setCurrentStep}
+      setCurrentStep={handleStepChange}
       onSubmit={handleSubmit}
       canProceed={!!validateStep()}
     >

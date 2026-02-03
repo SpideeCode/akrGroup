@@ -3,13 +3,15 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import Mission from './components/Mission';
+import Features from './components/Features';
 import Services from './components/Services';
+import CallbackForm from './components/CallbackForm';
 import Footer from './components/Footer';
 import EnergieForm from './components/forms/EnergieForm';
 import SolaireForm from './components/forms/SolaireForm';
 import TelecomForm from './components/forms/TelecomForm';
 import SuccessScreen from './components/SuccessScreen';
-import Features from './components/Features';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 
@@ -31,6 +33,7 @@ function LandingPage() {
     setShowSuccess(true);
   };
 
+  // Deprecated usage, but keeping for compatibility if Hero uses it
   const scrollToServices = () => {
     const servicesElement = document.getElementById('services');
     if (servicesElement) {
@@ -39,13 +42,25 @@ function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-cream">
+    <div className="min-h-screen bg-brand-cream font-inter">
       <Header onDevisClick={scrollToServices} />
-      <Hero onDevisClick={scrollToServices} />
-      <Features />
-      <div id="services">
-        <Services onServiceClick={handleServiceClick} />
-      </div>
+
+      <main>
+        <Hero onDevisClick={scrollToServices} />
+
+        <div id="mission">
+          <Mission />
+        </div>
+
+        <Features /> {/* Advantages */}
+
+        <div id="services">
+          <Services onServiceClick={handleServiceClick} />
+        </div>
+
+        <CallbackForm /> {/* Un expert vous rappelle */}
+      </main>
+
       <Footer />
 
       <EnergieForm
