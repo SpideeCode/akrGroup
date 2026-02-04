@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   onDevisClick: () => void;
@@ -7,10 +8,12 @@ interface HeaderProps {
 
 export default function Header({ onDevisClick }: HeaderProps) {
   const [lang, setLang] = useState('FR');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleNavigation = (item: { label: string; id?: string; path?: string }) => {
+    setIsMobileMenuOpen(false); // Close mobile menu if open
     if (item.path) {
       navigate(item.path);
       window.scrollTo(0, 0);
@@ -27,12 +30,20 @@ export default function Header({ onDevisClick }: HeaderProps) {
   };
 
   const handleLogoClick = () => {
+    setIsMobileMenuOpen(false);
     if (location.pathname !== '/') {
       navigate('/');
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
+
+  const navItems = [
+    { label: 'Accueil', id: 'home' },
+    { label: 'Services', id: 'services' },
+    { label: 'Job', path: '/job' },
+    { label: 'Contact', id: 'contact' },
+  ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-brand-dark/10 bg-white/90 backdrop-blur-md shadow-sm">
@@ -45,14 +56,9 @@ export default function Header({ onDevisClick }: HeaderProps) {
           <div className="w-full h-1 bg-gradient-to-r from-accent-energy via-accent-solar to-accent-telecom mt-1 rounded-full opactiy-80" />
         </div>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
-          {[
-            { label: 'Accueil', id: 'home' },
-            { label: 'Services', id: 'services' },
-            { label: 'Job', path: '/job' },
-            { label: 'Contact', id: 'contact' },
-          ].map((item) => (
+          {navItems.map((item) => (
             <button
               key={item.label}
               onClick={() => handleNavigation(item)}
@@ -63,10 +69,10 @@ export default function Header({ onDevisClick }: HeaderProps) {
           ))}
         </nav>
 
-        {/* Right Action: Language + CTA */}
+        {/* Right Action: Language + CTA + Mobile Toggle */}
         <div className="flex items-center gap-6">
-          {/* Language Selector */}
-          <div className="flex items-center gap-3 font-montserrat font-bold text-sm">
+          {/* Language Selector (Hidden on very small mobile if needed, but keeping for now) */}
+          <div className="hidden sm:flex items-center gap-3 font-montserrat font-bold text-sm">
             <button
               onClick={() => setLang('FR')}
               className={`${lang === 'FR' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
@@ -82,15 +88,66 @@ export default function Header({ onDevisClick }: HeaderProps) {
             </button>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button (Desktop) */}
           <button
             onClick={onDevisClick}
             className="hidden md:block px-6 py-2 bg-brand-dark text-white font-montserrat font-bold uppercase text-xs tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-brand-dark/20"
           >
             Devis Gratuit
           </button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-brand-dark hover:bg-brand-dark/5 rounded-full transition-colors"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-brand-dark/10 shadow-xl py-6 px-6 flex flex-col gap-4 animate-in slide-in-from-top-4 duration-200">
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => handleNavigation(item)}
+              className="text-left py-3 px-4 rounded-lg font-montserrat font-black text-lg uppercase tracking-wide text-brand-dark hover:bg-brand-dark/5 transition-colors"
+            >
+              {item.label}
+            </button>
+          ))}
+          <div className="h-px bg-brand-dark/10 my-2" />
+          <div className="flex items-center justify-between px-4 pb-2">
+            <span className="font-montserrat font-bold text-sm text-brand-muted uppercase">Langue</span>
+            <div className="flex items-center gap-3 font-montserrat font-bold text-sm">
+              <button
+                onClick={() => setLang('FR')}
+                className={`${lang === 'FR' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+              >
+                FR
+              </button>
+              <span className="text-brand-dark/20">|</span>
+              <button
+                onClick={() => setLang('NL')}
+                className={`${lang === 'NL' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+              >
+                NL
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              onDevisClick();
+              setIsMobileMenuOpen(false);
+            }}
+            className="w-full py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest hover:bg-brand-primary transition-all"
+          >
+            Devis Gratuit
+          </button>
+        </div>
+      )}
     </header>
   );
 }
