@@ -13,7 +13,7 @@ import {
 
 interface QuoteRequest {
     id: string;
-    service_type: 'energie' | 'solaire' | 'telecom';
+    service_type: 'energie' | 'solaire' | 'telecom' | 'job' | 'contact';
     form_data: any;
     contact_name: string;
     contact_email: string;
@@ -30,7 +30,7 @@ interface AdminDashboardProps {
 export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     const [requests, setRequests] = useState<QuoteRequest[]>([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState<'all' | 'energie' | 'solaire' | 'telecom'>('all');
+    const [filter, setFilter] = useState<'all' | 'energie' | 'solaire' | 'telecom' | 'job' | 'contact'>('all');
     const [searchTerm, setSearchTerm] = useState('');
     const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
 
@@ -115,6 +115,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             case 'energie': return 'bg-[#2563EB]';
             case 'solaire': return 'bg-[#38BDF8]';
             case 'telecom': return 'bg-[#60A5FA]';
+            case 'job': return 'bg-purple-400';
+            case 'contact': return 'bg-emerald-400';
             default: return 'bg-gray-400';
         }
     };
@@ -211,7 +213,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-                        {(['all', 'energie', 'solaire', 'telecom'] as const).map((type) => (
+                        {(['all', 'energie', 'solaire', 'telecom', 'job', 'contact'] as const).map((type) => (
                             <button
                                 key={type}
                                 onClick={() => setFilter(type)}
@@ -273,9 +275,11 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                                         <Mail size={14} className="text-brand-muted" /> {request.contact_email}
                                                     </div>
                                                 )}
-                                                <div className="flex items-center gap-2 text-sm font-medium text-brand-dark">
-                                                    <Clock size={14} className="text-brand-muted" /> CP: {request.contact_postal_code}
-                                                </div>
+                                                {request.contact_postal_code && (
+                                                    <div className="flex items-center gap-2 text-sm font-medium text-brand-dark">
+                                                        <Clock size={14} className="text-brand-muted" /> CP: {request.contact_postal_code}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
 

@@ -1,16 +1,36 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
-  onDevisClick: () => void; // Keeping this if we need to wire CONTACT to it, or I'll just use href
+  onDevisClick: () => void;
 }
 
 export default function Header({ onDevisClick }: HeaderProps) {
   const [lang, setLang] = useState('FR');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigation = (item: { label: string; id?: string; path?: string }) => {
+    if (item.path) {
+      navigate(item.path);
+      window.scrollTo(0, 0);
+    } else if (item.id) {
+      if (location.pathname !== '/') {
+        navigate('/', { state: { scrollTo: item.id } });
+      } else {
+        const element = document.getElementById(item.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -18,7 +38,7 @@ export default function Header({ onDevisClick }: HeaderProps) {
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-brand-dark/10 bg-white/90 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex flex-col items-start cursor-pointer" onClick={() => scrollToSection('home')}>
+        <div className="flex flex-col items-start cursor-pointer" onClick={handleLogoClick}>
           <span className="text-3xl font-black font-montserrat uppercase tracking-tighter text-brand-dark leading-none">
             AKR<span className="text-accent-energy">Group</span>
           </span>
@@ -30,12 +50,12 @@ export default function Header({ onDevisClick }: HeaderProps) {
           {[
             { label: 'Accueil', id: 'home' },
             { label: 'Services', id: 'services' },
-            { label: 'Job', id: 'job' },
+            { label: 'Job', path: '/job' },
             { label: 'Contact', id: 'contact' },
           ].map((item) => (
             <button
               key={item.label}
-              onClick={() => scrollToSection(item.id)}
+              onClick={() => handleNavigation(item)}
               className="font-montserrat font-bold text-sm uppercase tracking-wide text-brand-dark/70 hover:text-brand-dark transition-colors"
             >
               {item.label}

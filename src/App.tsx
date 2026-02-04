@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -14,12 +14,27 @@ import TelecomForm from './components/forms/TelecomForm';
 import SuccessScreen from './components/SuccessScreen';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
+import JobPage from './pages/JobPage';
 
 type ServiceType = 'energie' | 'solaire' | 'telecom' | null;
 
 function LandingPage() {
   const [activeForm, setActiveForm] = useState<ServiceType>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+        // Clean up state
+        window.history.replaceState({}, document.title);
+      }
+    }
+  }, [location]);
 
   const handleServiceClick = (service: ServiceType) => {
     setActiveForm(service);
@@ -58,7 +73,9 @@ function LandingPage() {
           <Services onServiceClick={handleServiceClick} />
         </div>
 
-        <CallbackForm /> {/* Un expert vous rappelle */}
+        <div id="contact">
+          <CallbackForm /> {/* Un expert vous rappelle */}
+        </div>
       </main>
 
       <Footer />
@@ -123,6 +140,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/job" element={<JobPage />} />
       <Route
         path="/admin/login"
         element={session ? <Navigate to="/admin/dashboard" /> : <AdminLogin onLogin={() => { }} onBack={() => navigate('/')} />}

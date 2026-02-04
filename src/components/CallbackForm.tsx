@@ -15,10 +15,12 @@ export default function CallbackForm() {
         setStatus('loading');
 
         try {
-            const { error } = await supabase.from('callback_requests').upsert({
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
+            const { error } = await supabase.from('quote_requests').insert({
+                service_type: 'contact',
+                contact_name: formData.name,
+                contact_email: formData.email,
+                contact_phone: formData.phone,
+                form_data: { "Message": "Demande de rappel" },
                 status: 'pending',
                 created_at: new Date().toISOString(),
             });
