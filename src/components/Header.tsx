@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   onDevisClick: () => void;
 }
 
 export default function Header({ onDevisClick }: HeaderProps) {
-  const [lang, setLang] = useState('FR');
+  const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   const handleNavigation = (item: { label: string; id?: string; path?: string }) => {
     setIsMobileMenuOpen(false); // Close mobile menu if open
@@ -39,10 +44,10 @@ export default function Header({ onDevisClick }: HeaderProps) {
   };
 
   const navItems = [
-    { label: 'Accueil', id: 'home' },
-    { label: 'Services', id: 'services' },
-    { label: 'Job', path: '/job' },
-    { label: 'Contact', id: 'contact' },
+    { label: t('nav.home'), id: 'home' },
+    { label: t('nav.services'), id: 'services' },
+    { label: t('nav.job'), path: '/job' },
+    { label: t('nav.contact'), id: 'contact' },
   ];
 
   return (
@@ -71,18 +76,18 @@ export default function Header({ onDevisClick }: HeaderProps) {
 
         {/* Right Action: Language + CTA + Mobile Toggle */}
         <div className="flex items-center gap-6">
-          {/* Language Selector (Hidden on very small mobile if needed, but keeping for now) */}
+          {/* Language Selector (Desktop) */}
           <div className="hidden sm:flex items-center gap-3 font-montserrat font-bold text-sm">
             <button
-              onClick={() => setLang('FR')}
-              className={`${lang === 'FR' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+              onClick={() => changeLanguage('fr')}
+              className={`${i18n.language === 'fr' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
             >
               FR
             </button>
             <span className="text-brand-dark/20">|</span>
             <button
-              onClick={() => setLang('NL')}
-              className={`${lang === 'NL' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+              onClick={() => changeLanguage('nl')}
+              className={`${i18n.language === 'nl' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
             >
               NL
             </button>
@@ -93,7 +98,7 @@ export default function Header({ onDevisClick }: HeaderProps) {
             onClick={onDevisClick}
             className="hidden md:block px-6 py-2 bg-brand-dark text-white font-montserrat font-bold uppercase text-xs tracking-widest hover:bg-brand-primary transition-all shadow-lg shadow-brand-dark/20"
           >
-            Devis Gratuit
+            {t('nav.quote')}
           </button>
 
           {/* Mobile Menu Toggle */}
@@ -123,15 +128,15 @@ export default function Header({ onDevisClick }: HeaderProps) {
             <span className="font-montserrat font-bold text-sm text-brand-muted uppercase">Langue</span>
             <div className="flex items-center gap-3 font-montserrat font-bold text-sm">
               <button
-                onClick={() => setLang('FR')}
-                className={`${lang === 'FR' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+                onClick={() => changeLanguage('fr')}
+                className={`${i18n.language === 'fr' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
               >
                 FR
               </button>
               <span className="text-brand-dark/20">|</span>
               <button
-                onClick={() => setLang('NL')}
-                className={`${lang === 'NL' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
+                onClick={() => changeLanguage('nl')}
+                className={`${i18n.language === 'nl' ? 'text-brand-dark' : 'text-brand-dark/40'} transition-colors`}
               >
                 NL
               </button>
@@ -144,7 +149,7 @@ export default function Header({ onDevisClick }: HeaderProps) {
             }}
             className="w-full py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest hover:bg-brand-primary transition-all"
           >
-            Devis Gratuit
+            {t('nav.quote')}
           </button>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FormWizard from '../FormWizard';
 import { supabase } from '../../lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 interface EnergieFormProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ interface FormData {
 }
 
 export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormProps) {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     address: '',
@@ -114,40 +116,79 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      alert(t('forms.submit_error'));
     }
   };
+
+  const statusOptions = [
+    { value: 'Propriétaire', label: t('forms.owner') },
+    { value: 'Locataire', label: t('forms.tenant') }
+  ];
+
+  const energyOptions = [
+    { value: 'Électricité', label: t('forms.options.electricity') },
+    { value: 'Gaz', label: t('forms.options.gas') },
+    { value: 'Électricité + Gaz', label: t('forms.options.elec_gas') }
+  ];
+
+  const meterOptions = [
+    { value: 'Digital', label: t('forms.options.digital') },
+    { value: 'Analogique', label: t('forms.options.analog') }
+  ];
+
+  const yesNoOptions = [
+    { value: 'Oui', label: t('forms.yes') },
+    { value: 'Non', label: t('forms.no') }
+  ];
+
+  const housingOptions = [
+    { value: 'Maison', label: t('forms.options.house') },
+    { value: 'Appartement', label: t('forms.options.apartment') }
+  ];
+
+  const buildingOptions = [
+    { value: 'Ancien', label: t('forms.options.old') },
+    { value: 'Neuf', label: t('forms.options.new') },
+    { value: 'Rénové', label: t('forms.options.renovated') }
+  ];
+
+  const heatingOptions = [
+    { value: 'Électrique', label: t('forms.options.heating_elec') },
+    { value: 'Gaz', label: t('forms.options.heating_gas') },
+    { value: 'Pompe à chaleur', label: t('forms.options.heating_pump') },
+    { value: 'Autre', label: t('forms.options.other') }
+  ];
 
   const steps = [
     <div key="step1" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Adresse et <span className="text-accent-energy">Statut</span>
+        {t('forms.step_address')} <span className="text-accent-energy">{t('forms.step_status')}</span>
       </h3>
       <div>
         <label className="block text-[10px] uppercase tracking-[0.2em] font-black text-brand-muted mb-3">
-          Adresse complète *
+          {t('forms.address_label')}
         </label>
         <input
           type="text"
           value={formData.address}
           onChange={(e) => updateField('address', e.target.value)}
           className="w-full bg-transparent border-b-2 border-brand-dark py-4 focus:outline-none focus:border-accent-energy transition-colors font-medium text-lg"
-          placeholder="Rue, numéro, code postal, ville"
+          placeholder={t('forms.address_placeholder')}
         />
       </div>
       <div>
         <label className="block text-[10px] uppercase tracking-[0.2em] font-black text-brand-muted mb-4">
-          Statut *
+          {t('forms.status_label')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Propriétaire', 'Locataire'].map((option) => (
+          {statusOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('status', option)}
-              className={`btn-option ${formData.status === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('status', option.value)}
+              className={`btn-option ${formData.status === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
@@ -156,83 +197,83 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
     <div key="step2" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Énergie et <span className="text-accent-energy">Compteur</span>
+        {t('forms.step_energy')} <span className="text-accent-energy">{t('forms.step_meter')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type d'énergie *
+          {t('forms.energy_type')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Électricité', 'Gaz', 'Électricité + Gaz'].map((option) => (
+          {energyOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('energie', option)}
-              className={`btn-option ${formData.energie === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('energie', option.value)}
+              className={`btn-option ${formData.energie === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type de compteur *
+          {t('forms.meter_type')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Digital', 'Analogique'].map((option) => (
+          {meterOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('meterType', option)}
-              className={`btn-option ${formData.meterType === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('meterType', option.value)}
+              className={`btn-option ${formData.meterType === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Marque du compteur *
+          {t('forms.meter_brand')}
         </label>
         <select
           value={formData.meterBrand}
           onChange={(e) => updateField('meterBrand', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez une marque</option>
+          <option value="">{t('forms.select_brand')}</option>
           <option value="Linky">Linky</option>
           <option value="Gazpar">Gazpar</option>
-          <option value="Autre">Autre</option>
+          <option value="Autre">{t('forms.options.other')}</option>
         </select>
       </div>
     </div>,
 
     <div key="step3" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Votre <span className="text-accent-energy">Situation</span>
+        {t('forms.step_situation')} <span className="text-accent-energy">{t('forms.step_situation')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Avez-vous des panneaux solaires ? *
+          {t('forms.solar_question')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Oui', 'Non'].map((option) => (
+          {yesNoOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('hasSolar', option)}
-              className={`btn-option ${formData.hasSolar === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('hasSolar', option.value)}
+              className={`btn-option ${formData.hasSolar === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Consommation annuelle estimée (kWh) *
+          {t('forms.consumption_label')}
         </label>
         <input
           type="text"
@@ -246,59 +287,58 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
     <div key="step4" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Informations <span className="text-accent-energy">Habitation</span>
+        {t('forms.step_housing_info')} <span className="text-accent-energy">{t('forms.step_housing_info')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type d'habitation *
+          {t('forms.housing_type')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Maison', 'Appartement'].map((option) => (
+          {housingOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('housingType', option)}
-              className={`btn-option ${formData.housingType === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('housingType', option.value)}
+              className={`btn-option ${formData.housingType === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type de bâtiment *
+          {t('forms.building_type')}
         </label>
         <select
           value={formData.buildingType}
           onChange={(e) => updateField('buildingType', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="Ancien">Ancien</option>
-          <option value="Neuf">Neuf</option>
-          <option value="Rénové">Rénové</option>
+          <option value="">{t('forms.select')}</option>
+          {buildingOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type de chauffage *
+          {t('forms.heating_type')}
         </label>
         <select
           value={formData.heating}
           onChange={(e) => updateField('heating', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="Électrique">Électrique</option>
-          <option value="Gaz">Gaz</option>
-          <option value="Pompe à chaleur">Pompe à chaleur</option>
-          <option value="Autre">Autre</option>
+          <option value="">{t('forms.select')}</option>
+          {heatingOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nombre de personnes dans le foyer *
+          {t('forms.people_count')}
         </label>
         <input
           type="number"
@@ -313,38 +353,38 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
     <div key="step5" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Quelques <span className="text-accent-energy">Options</span>
+        {t('forms.step_options')} <span className="text-accent-energy">{t('forms.step_options')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Avez-vous une voiture électrique ? *
+          {t('forms.car_question')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Oui', 'Non'].map((option) => (
+          {yesNoOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('hasCar', option)}
-              className={`btn-option ${formData.hasCar === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('hasCar', option.value)}
+              className={`btn-option ${formData.hasCar === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Avez-vous une pompe à chaleur ? *
+          {t('forms.heat_pump_question')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Oui', 'Non'].map((option) => (
+          {yesNoOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('hasHeatPump', option)}
-              className={`btn-option ${formData.hasHeatPump === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('hasHeatPump', option.value)}
+              className={`btn-option ${formData.hasHeatPump === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
@@ -353,23 +393,23 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
 
     <div key="step6" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Dernière <span className="text-accent-energy">Étape</span>
+        {t('forms.step_last')} <span className="text-accent-energy">{t('forms.step_last')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nom complet *
+          {t('forms.name_label')}
         </label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => updateField('name', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
-          placeholder="Votre nom"
+          placeholder={t('forms.name_placeholder')}
         />
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Téléphone *
+          {t('forms.phone_label')}
         </label>
         <input
           type="tel"
@@ -381,7 +421,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email
+          {t('forms.email_label')}
         </label>
         <input
           type="email"
@@ -393,7 +433,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Code postal
+          {t('forms.postal_code_label')}
         </label>
         <input
           type="text"

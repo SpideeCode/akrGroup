@@ -4,8 +4,10 @@ import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import { CheckCircle, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function JobPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         nom: '',
@@ -67,16 +69,16 @@ export default function JobPage() {
                             <CheckCircle className="w-8 h-8 text-white" />
                         </div>
                         <h2 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-4">
-                            Candidature envoyée !
+                            {t('job.success_title')}
                         </h2>
                         <p className="text-brand-muted mb-8">
-                            Merci de l'intérêt que vous portez à AKR Group. Notre équipe va étudier votre profil et vous recontactera rapidement.
+                            {t('job.success_message')}
                         </p>
                         <button
                             onClick={() => navigate('/')}
                             className="px-8 py-3 bg-brand-dark text-white font-black uppercase text-xs tracking-widest hover:bg-brand-primary transition-all"
                         >
-                            Retour à l'accueil
+                            {t('job.back_home')}
                         </button>
                     </div>
                 </main>
@@ -97,10 +99,10 @@ export default function JobPage() {
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <h1 className="text-4xl md:text-5xl font-black font-montserrat uppercase tracking-tighter mb-6">
-                            Rejoignez l'équipe <span className="text-accent-energy">AKR Group</span>
+                            {t('job.hero_title')} <span className="text-accent-energy">{t('job.hero_title_highlight')}</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-white/80 font-medium leading-relaxed max-w-2xl mx-auto">
-                            Nous sommes toujours à la recherche de nouveaux talents. Horaires flexibles, ambiance dynamique et opportunités de croissance.
+                            {t('job.hero_description')}
                         </p>
                     </div>
                 </div>
@@ -109,33 +111,33 @@ export default function JobPage() {
                 <div className="max-w-2xl mx-auto px-6 pb-20">
                     <div className="bg-white border-2 border-brand-dark p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,51,102,0.1)]">
                         <h2 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-2">
-                            Postulez maintenant
+                            {t('job.form_title')}
                         </h2>
-                        <p className="text-brand-muted mb-8">Remplissez ce formulaire pour nous transmettre votre profil.</p>
+                        <p className="text-brand-muted mb-8">{t('job.form_description')}</p>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Prénom *</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('job.firstname')}</label>
                                     <input
                                         required
                                         name="prenom"
                                         type="text"
                                         value={formData.prenom}
                                         onChange={handleChange}
-                                        placeholder="Votre prénom"
+                                        placeholder={t('job.firstname_placeholder')}
                                         className="w-full bg-brand-cream border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-energy focus:outline-none transition-colors"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Nom *</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('job.lastname')}</label>
                                     <input
                                         required
                                         name="nom"
                                         type="text"
                                         value={formData.nom}
                                         onChange={handleChange}
-                                        placeholder="Votre nom"
+                                        placeholder={t('job.lastname_placeholder')}
                                         className="w-full bg-brand-cream border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-energy focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -143,7 +145,7 @@ export default function JobPage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Téléphone *</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('job.phone')}</label>
                                     <input
                                         required
                                         name="phone"
@@ -155,28 +157,28 @@ export default function JobPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Âge *</label>
+                                    <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('job.age')}</label>
                                     <input
                                         required
                                         name="age"
                                         type="number"
                                         value={formData.age}
                                         onChange={handleChange}
-                                        placeholder="25"
+                                        placeholder={t('job.age_placeholder')}
                                         className="w-full bg-brand-cream border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-energy focus:outline-none transition-colors"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Lien CV / Description (Optionnel)</label>
+                                <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('job.cv_label')}</label>
                                 <div className="relative">
                                     <textarea
                                         name="cvText"
                                         value={formData.cvText}
                                         onChange={handleChange}
                                         rows={4}
-                                        placeholder="Collez un lien vers votre CV (LinkedIn, Google Drive...) ou décrivez brièvement votre expérience..."
+                                        placeholder={t('job.cv_placeholder')}
                                         className="w-full bg-brand-cream border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-energy focus:outline-none transition-colors resize-none"
                                     />
                                     <div className="absolute right-3 top-3 pointer-events-none text-brand-dark/20">
@@ -184,7 +186,7 @@ export default function JobPage() {
                                     </div>
                                 </div>
                                 <p className="text-[10px] text-brand-muted mt-2 italic">
-                                    * Nous privilégions la personnalité et la motivation. N'hésitez pas à nous dire ce qui vous motive !
+                                    {t('job.motivation_hint')}
                                 </p>
                             </div>
 
@@ -193,7 +195,7 @@ export default function JobPage() {
                                 disabled={loading}
                                 className="w-full py-4 bg-brand-dark text-white font-black uppercase text-xs tracking-widest hover:bg-accent-energy transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                             >
-                                {loading ? 'Envoi...' : 'Envoyer ma candidature'}
+                                {loading ? t('common.sending') : t('job.submit')}
                             </button>
                         </form>
                     </div>

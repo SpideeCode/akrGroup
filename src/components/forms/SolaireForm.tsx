@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FormWizard from '../FormWizard';
 import { supabase } from '../../lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 interface SolaireFormProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ interface FormData {
 }
 
 export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormProps) {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     kwh: '',
@@ -90,18 +92,58 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      alert(t('forms.submit_error'));
     }
   };
+
+  const phaseOptions = [
+    { value: 'Monophasé', label: t('forms.options.monophase') },
+    { value: 'Triphasé', label: t('forms.options.triphase') }
+  ];
+
+  const tvaOptions = [
+    { value: '10%', label: '10%' },
+    { value: '20%', label: '20%' }
+  ];
+
+  const ageOptions = [
+    { value: 'Moins de 2 ans', label: t('forms.options.age_less_2') },
+    { value: '2 à 15 ans', label: t('forms.options.age_2_15') },
+    { value: 'Plus de 15 ans', label: t('forms.options.age_more_15') }
+  ];
+
+  const roofOptions = [
+    { value: 'Tuiles', label: t('forms.options.roof_tiles') },
+    { value: 'Ardoises', label: t('forms.options.roof_slates') },
+    { value: 'Tôle', label: t('forms.options.roof_sheet') },
+    { value: 'Bac acier', label: t('forms.options.roof_steel') },
+    { value: 'Autre', label: t('forms.options.other') }
+  ];
+
+  const orientationOptions = [
+    { value: 'Sud', label: t('forms.options.orient_south') },
+    { value: 'Sud-Est', label: t('forms.options.orient_southeast') },
+    { value: 'Sud-Ouest', label: t('forms.options.orient_southwest') },
+    { value: 'Est', label: t('forms.options.orient_east') },
+    { value: 'Ouest', label: t('forms.options.orient_west') },
+    { value: 'Nord', label: t('forms.options.orient_north') }
+  ];
+
+  const inclinationOptions = [
+    { value: '0-15°', label: t('forms.options.inc_flat') },
+    { value: '15-30°', label: t('forms.options.inc_low') },
+    { value: '30-45°', label: t('forms.options.inc_med') },
+    { value: '45°+', label: t('forms.options.inc_high') }
+  ];
 
   const steps = [
     <div key="step1" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Votre <span className="text-accent-solar">Consommation</span>
+        {t('forms.step_consumption')} <span className="text-accent-solar">{t('forms.step_consumption')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Consommation annuelle (kWh) *
+          {t('forms.kwh_label')}
         </label>
         <input
           type="text"
@@ -113,134 +155,128 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Phase électrique *
+          {t('forms.phase_label')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['Monophasé', 'Triphasé'].map((option) => (
+          {phaseOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('phase', option)}
-              className={`btn-option ${formData.phase === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('phase', option.value)}
+              className={`btn-option ${formData.phase === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Taux de TVA applicable *
+          {t('forms.tva_label')}
         </label>
         <div className="grid grid-cols-2 gap-4">
-          {['10%', '20%'].map((option) => (
+          {tvaOptions.map((option) => (
             <button
-              key={option}
-              onClick={() => updateField('tva', option)}
-              className={`btn-option ${formData.tva === option ? 'btn-option-active' : 'btn-option-inactive'
+              key={option.value}
+              onClick={() => updateField('tva', option.value)}
+              className={`btn-option ${formData.tva === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          10% pour les logements de plus de 2 ans, 20% pour les neufs
+          {t('forms.tva_hint')}
         </p>
       </div>
     </div>,
 
     <div key="step2" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Informations <span className="text-accent-solar">Habitat</span>
+        {t('forms.step_habitat')} <span className="text-accent-solar">{t('forms.step_habitat')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Âge du bâtiment *
+          {t('forms.building_age')}
         </label>
         <select
           value={formData.buildingAge}
           onChange={(e) => updateField('buildingAge', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="Moins de 2 ans">Moins de 2 ans</option>
-          <option value="2 à 15 ans">2 à 15 ans</option>
-          <option value="Plus de 15 ans">Plus de 15 ans</option>
+          <option value="">{t('forms.select')}</option>
+          {ageOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Type de toiture *
+          {t('forms.roof_type')}
         </label>
         <select
           value={formData.roofType}
           onChange={(e) => updateField('roofType', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="Tuiles">Tuiles</option>
-          <option value="Ardoises">Ardoises</option>
-          <option value="Tôle">Tôle</option>
-          <option value="Bac acier">Bac acier</option>
-          <option value="Autre">Autre</option>
+          <option value="">{t('forms.select')}</option>
+          {roofOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Orientation de la toiture *
+          {t('forms.orientation')}
         </label>
         <select
           value={formData.orientation}
           onChange={(e) => updateField('orientation', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="Sud">Sud</option>
-          <option value="Sud-Est">Sud-Est</option>
-          <option value="Sud-Ouest">Sud-Ouest</option>
-          <option value="Est">Est</option>
-          <option value="Ouest">Ouest</option>
-          <option value="Nord">Nord</option>
+          <option value="">{t('forms.select')}</option>
+          {orientationOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Inclinaison de la toiture *
+          {t('forms.inclination')}
         </label>
         <select
           value={formData.inclination}
           onChange={(e) => updateField('inclination', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
         >
-          <option value="">Sélectionnez</option>
-          <option value="0-15°">0-15° (Plate)</option>
-          <option value="15-30°">15-30° (Faible)</option>
-          <option value="30-45°">30-45° (Moyenne)</option>
-          <option value="45°+">45°+ (Forte)</option>
+          <option value="">{t('forms.select')}</option>
+          {inclinationOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
       </div>
     </div>,
 
     <div key="step3" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Dernière <span className="text-accent-solar">Étape</span>
+        {t('forms.step_last')} <span className="text-accent-solar">{t('forms.step_last')}</span>
       </h3>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Nom complet *
+          {t('forms.name_label')}
         </label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => updateField('name', e.target.value)}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-900 focus:border-transparent"
-          placeholder="Votre nom"
+          placeholder={t('forms.name_placeholder')}
         />
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Téléphone *
+          {t('forms.phone_label')}
         </label>
         <input
           type="tel"
@@ -252,7 +288,7 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email
+          {t('forms.email_label')}
         </label>
         <input
           type="email"
@@ -264,7 +300,7 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Code postal
+          {t('forms.postal_code_label')}
         </label>
         <input
           type="text"

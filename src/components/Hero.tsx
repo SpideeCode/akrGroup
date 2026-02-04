@@ -1,10 +1,13 @@
 
+import { useTranslation } from 'react-i18next';
 
 interface HeroProps {
   onDevisClick: () => void;
 }
 
 export default function Hero({ onDevisClick }: HeroProps) {
+  const { t } = useTranslation();
+
   return (
     <section id="home" className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -20,14 +23,14 @@ export default function Hero({ onDevisClick }: HeroProps) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pt-20">
-        <div className="max-w-3xl">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black font-montserrat leading-[1.1] tracking-tight text-brand-dark mb-8 uppercase drop-shadow-sm">
-            Optimisez vos <span className="text-accent-energy">dépenses</span>,<br />
-            vivez <span className="text-brand-primary">mieux</span>.
+        <div className="max-w-4xl">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black font-montserrat leading-[1.1] tracking-tight text-brand-dark mb-8 uppercase drop-shadow-sm">
+            {t('hero.title_start')} <span className="text-accent-energy">{t('hero.title_highlight')}</span>,<br />
+            {t('hero.title_end')} <span className="text-brand-primary">{t('hero.title_better')}</span>.
           </h1>
 
           <p className="text-xl md:text-2xl text-brand-dark/80 font-medium max-w-2xl leading-relaxed mb-10">
-            Nous accompagnons les particuliers et les professionnels partout en Belgique dans la recherche des meilleures offres en énergie, télécom et panneaux solaires grâce à un devis gratuit et personnalisé.
+            {t('hero.description')}
           </p>
 
           <button
@@ -35,7 +38,7 @@ export default function Hero({ onDevisClick }: HeroProps) {
             className="group relative px-8 py-5 bg-brand-dark text-white font-montserrat font-bold uppercase tracking-widest text-lg shadow-xl shadow-brand-dark/20 transition-all hover:scale-105 active:scale-95 hover:bg-brand-primary rounded-sm"
           >
             <div className="flex items-center gap-3">
-              👉 Obtenir mon devis gratuit
+              👉 {t('hero.cta')}
             </div>
           </button>
         </div>

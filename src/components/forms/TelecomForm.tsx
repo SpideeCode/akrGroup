@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FormWizard from '../FormWizard';
 import { supabase } from '../../lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 interface TelecomFormProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ interface FormData {
 }
 
 export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormProps) {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     provider: '',
@@ -123,31 +125,52 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      alert(t('forms.submit_error'));
     }
   };
 
-  const providers = ['Proximus', 'Orange', 'Voo', 'Telenet', 'EDPnet', 'Pas encore de fournisseur', 'Autre'];
-  const engagementDurations = ['Moins d’un an', 'Plus d’un an', 'Je ne sais pas'];
-  const satisfactionOptions = ['Qualité réseau', 'Prix', 'Service client', 'Coupure assez fréquente', 'Je suis assez satisfait', 'Autre'];
+  const providers = [
+    { value: 'Proximus', label: 'Proximus' },
+    { value: 'Orange', label: 'Orange' },
+    { value: 'Voo', label: 'Voo' },
+    { value: 'Telenet', label: 'Telenet' },
+    { value: 'EDPnet', label: 'EDPnet' },
+    { value: 'Pas encore de fournisseur', label: t('forms.options.no_provider') },
+    { value: 'Autre', label: t('forms.options.other') }
+  ];
+
+  const engagementDurations = [
+    { value: 'Moins d’un an', label: t('forms.options.eng_less_1') },
+    { value: 'Plus d’un an', label: t('forms.options.eng_more_1') },
+    { value: 'Je ne sais pas', label: t('forms.options.eng_idk') }
+  ];
+
+  const satisfactionOptions = [
+    { value: 'Qualité réseau', label: t('forms.options.issue_network') },
+    { value: 'Prix', label: t('forms.options.issue_price') },
+    { value: 'Service client', label: t('forms.options.issue_service') },
+    { value: 'Coupure assez fréquente', label: t('forms.options.issue_outage') },
+    { value: 'Je suis assez satisfait', label: t('forms.options.issue_satisfied') },
+    { value: 'Autre', label: t('forms.options.other') }
+  ];
 
   const steps = [
     // Step 1: Provider
     <div key="step1" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Quel est votre <span className="text-accent-telecom">fournisseur</span> d'internet ? *
+        {t('forms.step_provider')} <span className="text-accent-telecom">{t('forms.provider_label')}</span> d'internet ? *
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {providers.map((p) => (
           <button
-            key={p}
-            onClick={() => updateField('provider', p)}
-            className={`p-4 border-2 font-montserrat font-bold text-sm transition-all ${formData.provider === p
-                ? 'border-brand-dark bg-brand-dark text-white'
-                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+            key={p.value}
+            onClick={() => updateField('provider', p.value)}
+            className={`p-4 border-2 font-montserrat font-bold text-sm transition-all ${formData.provider === p.value
+              ? 'border-brand-dark bg-brand-dark text-white'
+              : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
               }`}
           >
-            {p}
+            {p.label}
           </button>
         ))}
       </div>
@@ -156,7 +179,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
     // Step 2: Bill
     <div key="step2" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Combien <span className="text-accent-telecom">payez-vous</span> par mois ?
+        {t('forms.step_bill')} <span className="text-accent-telecom">{t('forms.bill_question')}</span> par mois ?
       </h3>
       <div className="relative">
         <input
@@ -174,7 +197,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
     <div key="step3" className="space-y-8">
       <div>
         <h3 className="text-xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-4">
-          Êtes-vous <span className="text-accent-telecom">engagés</span> actuellement ?
+          {t('forms.step_engagement')} <span className="text-accent-telecom">{t('forms.engaged_question')}</span> actuellement ?
         </h3>
         <div className="flex flex-col gap-3">
           <button
@@ -183,11 +206,11 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
               updateField('engagementDuration', ''); // Reset duration if re-clicking
             }}
             className={`p-4 border-2 text-left font-montserrat font-bold text-sm transition-all ${formData.isEngaged === 'oui'
-                ? 'border-brand-dark bg-brand-dark text-white'
-                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              ? 'border-brand-dark bg-brand-dark text-white'
+              : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
               }`}
           >
-            Oui, je suis toujours engagé
+            {t('forms.options.engaged_yes_long')}
           </button>
           <button
             onClick={() => {
@@ -195,11 +218,11 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
               updateField('engagementDuration', '');
             }}
             className={`p-4 border-2 text-left font-montserrat font-bold text-sm transition-all ${formData.isEngaged === 'non'
-                ? 'border-brand-dark bg-brand-dark text-white'
-                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+              ? 'border-brand-dark bg-brand-dark text-white'
+              : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
               }`}
           >
-            Non, je ne suis plus engagé
+            {t('forms.options.engaged_no')}
           </button>
         </div>
       </div>
@@ -207,19 +230,19 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
       {formData.isEngaged === 'oui' && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
           <h4 className="text-sm font-black font-montserrat uppercase tracking-widest text-brand-muted mb-4">
-            Depuis combien de temps ?
+            {t('forms.options.engaged_how_long')}
           </h4>
           <div className="grid grid-cols-1 gap-3">
             {engagementDurations.map(d => (
               <button
-                key={d}
-                onClick={() => updateField('engagementDuration', d)}
-                className={`p-3 border-2 font-montserrat font-bold text-xs transition-all ${formData.engagementDuration === d
-                    ? 'border-accent-telecom bg-accent-telecom text-white'
-                    : 'border-brand-dark/10 hover:border-accent-telecom/50 text-brand-dark/60'
+                key={d.value}
+                onClick={() => updateField('engagementDuration', d.value)}
+                className={`p-3 border-2 font-montserrat font-bold text-xs transition-all ${formData.engagementDuration === d.value
+                  ? 'border-accent-telecom bg-accent-telecom text-white'
+                  : 'border-brand-dark/10 hover:border-accent-telecom/50 text-brand-dark/60'
                   }`}
               >
-                {d}
+                {d.label}
               </button>
             ))}
           </div>
@@ -230,21 +253,21 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
     // Step 4: Satisfaction
     <div key="step4" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Quels <span className="text-accent-telecom">problèmes</span> rencontrez-vous ?
+        {t('forms.step_problems')} <span className="text-accent-telecom">{t('forms.problems_question')}</span> rencontrez-vous ?
       </h3>
       <p className="text-sm text-brand-muted font-medium mb-4">Plusieurs choix possibles</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {satisfactionOptions.map((option) => (
           <button
-            key={option}
-            onClick={() => toggleIssue(option)}
-            className={`p-3 border-2 font-montserrat font-bold text-xs transition-all text-left flex items-center justify-between ${formData.satisfactionIssues.includes(option)
-                ? 'border-accent-telecom bg-accent-telecom text-white'
-                : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
+            key={option.value}
+            onClick={() => toggleIssue(option.value)}
+            className={`p-3 border-2 font-montserrat font-bold text-xs transition-all text-left flex items-center justify-between ${formData.satisfactionIssues.includes(option.value)
+              ? 'border-accent-telecom bg-accent-telecom text-white'
+              : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
               }`}
           >
-            {option}
-            {formData.satisfactionIssues.includes(option) && (
+            {option.label}
+            {formData.satisfactionIssues.includes(option.value) && (
               <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
@@ -257,20 +280,20 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
     // Step 5: Contact
     <div key="step5" className="space-y-6">
       <h3 className="text-2xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-6">
-        Vos <span className="text-accent-telecom">Coordonnées</span>
+        {t('forms.step_contact')} <span className="text-accent-telecom">{t('forms.contact_label')}</span>
       </h3>
       <div>
-        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Nom *</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('forms.name_label')}</label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => updateField('name', e.target.value)}
-          placeholder="E.g John Doe"
+          placeholder={t('forms.name_placeholder')}
           className="w-full bg-white border-2 border-brand-dark/10 p-3 font-medium focus:border-accent-telecom focus:outline-none transition-colors"
         />
       </div>
       <div>
-        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Email Address *</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('forms.email_label')}</label>
         <input
           type="email"
           value={formData.email}
@@ -280,7 +303,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
         />
       </div>
       <div>
-        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Phone *</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('forms.phone_label')}</label>
         <input
           type="tel"
           value={formData.phone}
@@ -290,7 +313,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
         />
       </div>
       <div>
-        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">Code Postale *</label>
+        <label className="text-xs font-black uppercase tracking-widest text-brand-muted block mb-2">{t('forms.postal_code_label')}</label>
         <input
           type="text"
           value={formData.postalCode}

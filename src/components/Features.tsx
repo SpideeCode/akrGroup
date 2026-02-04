@@ -1,22 +1,25 @@
 import { Search, UserCheck, TrendingDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Features() {
+    const { t } = useTranslation();
+
     const steps = [
         {
-            title: 'Analyse gratuite de votre situation',
-            description: 'Analyse des contrats et habitudes de consommation pour identifier des économies.',
+            title: t('features.analysis.title'),
+            description: t('features.analysis.description'),
             icon: Search,
             color: 'text-accent-energy',
         },
         {
-            title: 'Un accompagnement personnalisé',
-            description: 'Un expert analyse le profil et accompagne dans les choix adaptés.',
+            title: t('features.support.title'),
+            description: t('features.support.description'),
             icon: UserCheck,
             color: 'text-accent-solar',
         },
         {
-            title: 'Réduisez vos dépenses',
-            description: 'Aide à diminuer les factures avec un accompagnement simple, sans démarches complexes.',
+            title: t('features.reduce.title'),
+            description: t('features.reduce.description'),
             icon: TrendingDown,
             color: 'text-accent-telecom',
         },

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Phone } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 
 export default function CallbackForm() {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -38,12 +40,11 @@ export default function CallbackForm() {
         <section className="py-20 bg-white border-t border-brand-dark/5">
             <div className="max-w-4xl mx-auto px-6 text-center">
                 <h2 className="text-3xl md:text-4xl font-black font-montserrat uppercase tracking-tight text-brand-dark mb-4">
-                    Un expert vous <span className="text-brand-primary">rappelle</span>
+                    {t('callback_form.title')} <span className="text-brand-primary">{t('callback_form.title_highlight')}</span>
                 </h2>
 
                 <p className="text-lg text-brand-dark/70 font-medium mb-12 max-w-2xl mx-auto">
-                    Vous souhaitez simplement être contacté pour plus d’informations ?<br />
-                    Laissez vos coordonnées, un expert vous rappelle.
+                    <Trans i18nKey="callback_form.description" components={{ br: <br /> }} />
                 </p>
 
                 <form onSubmit={handleSubmit} className="bg-brand-cream p-8 md:p-12 border-2 border-brand-dark max-w-2xl mx-auto relative overflow-hidden group">
@@ -52,11 +53,11 @@ export default function CallbackForm() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-10">
                         <div className="text-left">
-                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">Nom</label>
+                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">{t('callback_form.name')}</label>
                             <input
                                 type="text"
                                 required
-                                placeholder="Votre nom"
+                                placeholder={t('callback_form.name_placeholder')}
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full bg-white border-2 border-brand-dark/10 p-4 font-medium focus:border-brand-primary focus:outline-none transition-colors"
@@ -64,11 +65,11 @@ export default function CallbackForm() {
                         </div>
 
                         <div className="text-left">
-                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">Email</label>
+                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">{t('callback_form.email')}</label>
                             <input
                                 type="email"
                                 required
-                                placeholder="votre@email.com"
+                                placeholder={t('callback_form.email_placeholder')}
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 className="w-full bg-white border-2 border-brand-dark/10 p-4 font-medium focus:border-brand-primary focus:outline-none transition-colors"
@@ -76,11 +77,11 @@ export default function CallbackForm() {
                         </div>
 
                         <div className="text-left md:col-span-2">
-                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">Téléphone</label>
+                            <label className="block text-xs font-black uppercase tracking-widest text-brand-muted mb-2">{t('callback_form.phone')}</label>
                             <input
                                 type="tel"
                                 required
-                                placeholder="0470 12 34 56"
+                                placeholder={t('callback_form.phone_placeholder')}
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                 className="w-full bg-white border-2 border-brand-dark/10 p-4 font-medium focus:border-brand-primary focus:outline-none transition-colors"
@@ -94,12 +95,12 @@ export default function CallbackForm() {
                         className="w-full py-5 bg-brand-dark text-white font-montserrat font-black uppercase tracking-widest text-sm hover:bg-brand-primary transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                     >
                         {status === 'loading' ? (
-                            'Envoi...'
+                            t('common.sending')
                         ) : status === 'success' ? (
-                            'Demande envoyée !'
+                            t('callback_form.success')
                         ) : (
                             <>
-                                Être rappelé
+                                {t('callback_form.submit')}
                                 <Phone className="w-5 h-5" />
                             </>
                         )}
@@ -108,12 +109,12 @@ export default function CallbackForm() {
                     <div className="mt-8 pt-8 border-t border-brand-dark/5 flex flex-col md:flex-row items-center justify-center gap-4 text-brand-muted text-sm font-medium">
                         <span className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-green-500" />
-                            Rappel gratuit
+                            {t('callback_form.feature_free')}
                         </span>
                         <span className="hidden md:inline">•</span>
-                        <span>Sans engagement</span>
+                        <span>{t('callback_form.feature_no_commitment')}</span>
                         <span className="hidden md:inline">•</span>
-                        <span>Données confidentielles</span>
+                        <span>{t('callback_form.feature_confidential')}</span>
                     </div>
                 </form>
             </div>

@@ -1,31 +1,34 @@
 import { Zap, Sun, Radio } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ServicesProps {
   onServiceClick: (service: 'energie' | 'solaire' | 'telecom') => void;
 }
 
 export default function Services({ onServiceClick }: ServicesProps) {
+  const { t } = useTranslation();
+
   const services = [
     {
       id: 'energie' as const,
-      title: 'ÉNERGIE',
-      subtitle: 'Gaz & Électricité',
+      title: t('services.energy.title'),
+      subtitle: t('services.energy.subtitle'),
       icon: Zap,
       accent: 'group-hover:bg-accent-energy',
       border: 'border-accent-energy',
     },
     {
       id: 'solaire' as const,
-      title: 'PANNEAUX SOLAIRES',
-      subtitle: 'Étude & installation',
+      title: t('services.solar.title'),
+      subtitle: t('services.solar.subtitle'),
       icon: Sun,
       accent: 'group-hover:bg-accent-solar',
       border: 'border-accent-solar',
     },
     {
       id: 'telecom' as const,
-      title: 'TÉLÉCOM',
-      subtitle: 'Internet – TV – Téléphonie',
+      title: t('services.telecom.title'),
+      subtitle: t('services.telecom.subtitle'),
       icon: Radio,
       accent: 'group-hover:bg-accent-telecom',
       border: 'border-accent-telecom',
@@ -38,10 +41,10 @@ export default function Services({ onServiceClick }: ServicesProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div>
             <h2 className="text-4xl md:text-6xl font-black font-montserrat uppercase tracking-tighter text-brand-dark mb-4">
-              Nos <span className="text-brand-muted">Expertises</span>
+              {t('services.title')} <span className="text-brand-muted">{t('services.title_highlight')}</span>
             </h2>
             <p className="text-xl text-brand-dark/60 font-medium max-w-xl">
-              Des solutions concrètes pour optimiser vos charges fixes et améliorer votre confort thermique et numérique.
+              {t('services.description')}
             </p>
           </div>
         </div>
@@ -71,7 +74,7 @@ export default function Services({ onServiceClick }: ServicesProps) {
 
                 <div className="mt-auto pt-4">
                   <div className="inline-flex items-center gap-4 px-6 py-4 bg-brand-dark text-white font-montserrat font-black uppercase text-xs tracking-widest transition-all group-hover:bg-brand-primary group-hover:scale-105">
-                    DÉMARRER
+                    {t('services.start')}
                     <div className="w-8 h-px bg-white/30 group-hover:w-12 transition-all" />
                   </div>
                 </div>

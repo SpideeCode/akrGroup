@@ -1,7 +1,10 @@
 import { Phone, Mail, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-brand-dark text-white pt-20 pb-10 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -13,17 +16,17 @@ export default function Footer() {
             </span>
             <div className="w-12 h-1 bg-gradient-to-r from-accent-energy to-accent-solar mb-6 rounded-full" />
             <p className="text-white/60 font-medium leading-relaxed mb-6">
-              Votre partenaire de confiance pour optimiser vos charges domestiques et améliorer votre confort quotidien.
+              {t('footer.description')}
             </p>
             <p className="font-bold text-white flex items-center gap-2">
-              <span className="text-2xl">🇧🇪</span> Actif partout en Belgique
+              <span className="text-2xl">🇧🇪</span> {t('footer.active')}
             </p>
           </div>
 
           {/* Contact */}
           <div>
             <h4 className="font-montserrat font-black uppercase tracking-widest text-sm text-white/40 mb-8">
-              Contact
+              {t('footer.contact')}
             </h4>
             <div className="space-y-6">
               <a href="tel:+32484430083" className="flex items-center gap-4 text-white/80 hover:text-accent-energy transition-colors group">
@@ -44,19 +47,19 @@ export default function Footer() {
           {/* ServicesLinks */}
           <div>
             <h4 className="font-montserrat font-black uppercase tracking-widest text-sm text-white/40 mb-8">
-              Services
+              {t('footer.services')}
             </h4>
             <ul className="space-y-4 font-medium text-white/70">
-              <li><a href="#energie" className="hover:text-accent-energy transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-energy" /> Énergie</a></li>
-              <li><a href="#solaire" className="hover:text-accent-solar transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-solar" /> Panneaux Solaires</a></li>
-              <li><a href="#telecom" className="hover:text-accent-telecom transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-telecom" /> Télécom</a></li>
+              <li><a href="#energie" className="hover:text-accent-energy transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-energy" /> {t('services.energy.title')}</a></li>
+              <li><a href="#solaire" className="hover:text-accent-solar transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-solar" /> {t('services.solar.title')}</a></li>
+              <li><a href="#telecom" className="hover:text-accent-telecom transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-telecom" /> {t('services.telecom.title')}</a></li>
             </ul>
           </div>
 
           {/* Social */}
           <div>
             <h4 className="font-montserrat font-black uppercase tracking-widest text-sm text-white/40 mb-8">
-              Suivez-nous
+              {t('footer.follow')}
             </h4>
             <div className="flex gap-4">
               {[Facebook, Instagram, Linkedin].map((Icon, i) => (
@@ -69,11 +72,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-medium text-white/40">
-          <p>© {new Date().getFullYear()} AKR Group. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} AKR Group. {t('footer.rights')}</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Mentions légales</a>
-            <a href="#" className="hover:text-white transition-colors">Confidentialité</a>
-            <Link to="/admin/login" className="hover:text-white transition-colors">Admin</Link>
+            <a href="#" className="hover:text-white transition-colors">{t('footer.legal')}</a>
+            <a href="#" className="hover:text-white transition-colors">{t('footer.privacy')}</a>
+            <Link to="/admin/login" className="hover:text-white transition-colors">{t('footer.admin')}</Link>
           </div>
         </div>
       </div>
