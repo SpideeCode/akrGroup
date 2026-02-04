@@ -42,4 +42,15 @@
   .btn-option-inactive {
     @apply border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/60;
   }
+
+  .safe-area-view {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .safe-area-padding-bottom {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
 }

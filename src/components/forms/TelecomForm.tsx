@@ -261,7 +261,7 @@ export default function TelecomForm({ isOpen, onClose, onSuccess }: TelecomFormP
           <button
             key={option.value}
             onClick={() => toggleIssue(option.value)}
-            className={`p-3 border-2 font-montserrat font-bold text-xs transition-all text-left flex items-center justify-between ${formData.satisfactionIssues.includes(option.value)
+            className={`p-3 border-2 font-montserrat font-bold text-xs transition-all text-left flex items-center justify-between min-h-[48px] ${formData.satisfactionIssues.includes(option.value)
               ? 'border-accent-telecom bg-accent-telecom text-white'
               : 'border-brand-dark/10 hover:border-brand-dark/30 text-brand-dark/70'
               }`}

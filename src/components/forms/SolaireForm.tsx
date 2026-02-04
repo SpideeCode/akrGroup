@@ -162,7 +162,7 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
             <button
               key={option.value}
               onClick={() => updateField('phase', option.value)}
-              className={`btn-option ${formData.phase === option.value ? 'btn-option-active' : 'btn-option-inactive'
+              className={`btn-option min-h-[56px] ${formData.phase === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
               {option.label}
@@ -179,7 +179,7 @@ export default function SolaireForm({ isOpen, onClose, onSuccess }: SolaireFormP
             <button
               key={option.value}
               onClick={() => updateField('tva', option.value)}
-              className={`btn-option ${formData.tva === option.value ? 'btn-option-active' : 'btn-option-inactive'
+              className={`btn-option min-h-[56px] ${formData.tva === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
               {option.label}

@@ -185,7 +185,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option.value}
               onClick={() => updateField('status', option.value)}
-              className={`btn-option ${formData.status === option.value ? 'btn-option-active' : 'btn-option-inactive'
+              className={`btn-option min-h-[56px] ${formData.status === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
               {option.label}
@@ -208,7 +208,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option.value}
               onClick={() => updateField('energie', option.value)}
-              className={`btn-option ${formData.energie === option.value ? 'btn-option-active' : 'btn-option-inactive'
+              className={`btn-option min-h-[56px] ${formData.energie === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
               {option.label}
@@ -225,7 +225,7 @@ export default function EnergieForm({ isOpen, onClose, onSuccess }: EnergieFormP
             <button
               key={option.value}
               onClick={() => updateField('meterType', option.value)}
-              className={`btn-option ${formData.meterType === option.value ? 'btn-option-active' : 'btn-option-inactive'
+              className={`btn-option min-h-[56px] ${formData.meterType === option.value ? 'btn-option-active' : 'btn-option-inactive'
                 }`}
             >
               {option.label}
