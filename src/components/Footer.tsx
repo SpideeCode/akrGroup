@@ -75,7 +75,7 @@ export default function Footer() {
         </AnimatedSection>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm font-medium text-white/40">
-          <p>© {new Date().getFullYear()} AKR Group. {t('footer.rights')}</p>
+          <p>© {new Date().getFullYear()} AKR Group. {t('footer.rights')} <span className="opacity-50">|</span> {t('footer.developed')} <a href="https://www.webora-da.be/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Webora</a></p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white transition-colors">{t('footer.legal')}</a>
             <a href="#" className="hover:text-white transition-colors">{t('footer.privacy')}</a>
